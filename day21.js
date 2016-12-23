@@ -79,7 +79,8 @@ var rotatePos = function (letter, ind) {
     }
 };
 
-var rotatePosR = function (letter, ind) { //need to fix this - isn't locating ind in posInd
+var rotatePosR = function (letter, ind) { 
+    var curr = password.indexOf(letter);
     var orig;    
     for (var a = 0; a < posInd.length; a++) {
         if (posInd[a][0] == ind) {
@@ -87,7 +88,7 @@ var rotatePosR = function (letter, ind) { //need to fix this - isn't locating in
             break;
         }
     }
-    var spot = orig;
+    var spot = curr - orig;
     var steps = 1 + spot;
     if (spot >= 4) {
         steps += 1;
