@@ -144,7 +144,7 @@ console.log(scramble);
 
 password = ['g', 'b', 'h', 'c', 'e', 'f', 'a', 'd'];
 
-for (var h = input.length - 1; h > 0; h--) {
+for (var h = input.length - 1; h >= 0; h--) {
         var line = input[h].split(' ');
         if (line[0] === 'swap') {
             if (line[1] === 'position') {
