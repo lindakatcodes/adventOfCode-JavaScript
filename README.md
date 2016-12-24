@@ -5,7 +5,7 @@ My focus this year is to gain experience with JavaScript, practice using node an
 
 For my future reference
 Days I managed to solve on my own:
-1 / 2 / 3 / 6 / 12 / 14 / 15 / 16 / 18 / 
+1 / 2 / 3 / 6 / 12 / 14 / 15 / 16 / 18 / 23 / 
 
 Days I got at least part way but had some assistance from others:
 4 / 5 / 7 / 8 / 9 / 19 / 21 / 
