@@ -8,7 +8,7 @@ Days I managed to solve on my own:
 1 / 2 / 3 / 6 / 12 / 14 / 15 / 16 / 18 / 
 
 Days I got at least part way but had some assistance from others:
-4 / 5 / 7 / 8 / 9 / 19 / 
+4 / 5 / 7 / 8 / 9 / 19 / 21 / 
 
 Days I couldn't solve and had to use someone else's solution:
 10 / 11 / 13 / 17 / 20 / 22 / 
