@@ -6,10 +6,12 @@ My focus this year is to gain experience with JavaScript, practice using node an
 For my future reference:
 
 Days I managed to solve on my own:
-1 / 2 / 3 / 6 / 12 / 14 / 15 / 16 / 18 / 23 / 
+1 / 2 / 3 / 6 / 12 / 14 / 15 / 16 / 18 / 23 - 40%
 
 Days I got at least part way but had some assistance from others:
-4 / 5 / 7 / 8 / 9 / 19 / 21 / 
+4 / 5 / 7 / 8 / 9 / 19 / 21 - 28%
 
 Days I couldn't solve and had to use someone else's solution:
-10 / 11 / 13 / 17 / 20 / 22 / 
+10 / 11 / 13 / 17 / 20 / 22 / 24 / 25 - 32%
+
+So, end of the month, and I've stuck through it! It's been a lot of fun, and I've got a good list of concepts for JavaScript and programming in general to investigate and learn more about to keep improving and growing my knowledge. I'm actually really surprised that I solved a good bit on my own. Special thanks to all who posted on the subreddit and offered help and their solutions in the megathreads - without the community around this challenge, I wouldn't have had a chance at understanding and working through this. 
