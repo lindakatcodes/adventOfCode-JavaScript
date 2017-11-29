@@ -1,7 +1,7 @@
 # adventOfCode!
 Working through adventofcode.com.
 
--- #2016 --
+-- 2016 --
 
 My focus this year is to gain experience with JavaScript, practice using node and github, be exposed to new functions/algorithms/libraries I haven't played with before, and actually working through how to solve each day. As a relatively new programmer I will be relying heavily on the r/adventofcode community for help! It's more important to me to understand how to solve something and get exposed to new things than to struggle through alone. All users that inspire or inform me will be mentioned at the top of each day's code. 
 
@@ -20,7 +20,7 @@ So, end of the month, and I've stuck through it! It's been a lot of fun, and I'v
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
--- #2017 --
+-- 2017 --
 
 My focus this year is to use JavaScript again and see if I'm able to solve more days on my own! I want to see if I've improved at all since last year. Understandably, the problems will be different, so it won't be an exact answer to this question. I still want to see if I can do more on my own, or more with less help. :) Excited to see how it goes! Just like last year, I know the community will be a huge help to me, and anyone who helps me on a specific solution will be mentioned at the top of each day's solution.
 
