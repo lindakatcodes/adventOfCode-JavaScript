@@ -1,0 +1,24 @@
+{
+  "name": "adventofcode-javascript",
+  "version": "1.0.0",
+  "description": "Solutions to adventOfCode",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindakatcodes/adventOfCode-JavaScript.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lindakatcodes/adventOfCode-JavaScript/issues"
+  },
+  "homepage": "https://github.com/lindakatcodes/adventOfCode-JavaScript#readme",
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
