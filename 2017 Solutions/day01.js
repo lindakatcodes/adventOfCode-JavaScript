@@ -41,16 +41,16 @@ const captcha = '683763347952248558274598352939674972954641755898815882568823446
 let toSum = [];
 
 for (let i = 0; i < captcha.length; i++) {
-  const current = captcha[i];
-  const next = captcha[i + 1];
+    const current = captcha[i];
+    const next = captcha[i + 1];
 
-  if (current == next) {
-    toSum.push(current);
-  }
+    if (current == next) {
+        toSum.push(current);
+    }
 }
 
 if (captcha[0] == captcha[captcha.length - 1]) {
-  toSum.push(captcha[0]);
+    toSum.push(captcha[0]);
 }
 
 const solution = toSum.reduce((sum, value) => sum + parseInt(value), 0);
@@ -61,12 +61,12 @@ toSum = [];
 const halfway = captcha.length / 2;
 
 for (let k = 0; k < captcha.length; k++) {
-  const current = captcha[k];
-  const compare = captcha[(k + halfway) % captcha.length];
+    const current = captcha[k];
+    const compare = captcha[(k + halfway) % captcha.length];
 
-  if (current == compare) {
-    toSum.push(current);
-  }
+    if (current == compare) {
+        toSum.push(current);
+    }
 }
 
 const solution2 = toSum.reduce((sum, value) => sum + parseInt(value), 0);
