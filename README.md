@@ -26,7 +26,7 @@ My focus this year is to use JavaScript again and see if I'm able to solve more 
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 4
+Days I managed to solve on my own: 1 / 2 / 4 / 5
 
 
 Days I got at least part way but had some assistance form others: 3 / 

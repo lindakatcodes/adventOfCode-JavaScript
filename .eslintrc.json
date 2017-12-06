@@ -5,8 +5,12 @@
             "error",
             "windows"
         ],
-        "indent": 4,
+        "indent": [
+            1,
+            4
+        ],
         "no-console": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "prefer-const": "off"
     }
 }
