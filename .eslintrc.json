@@ -11,6 +11,11 @@
         ],
         "no-console": "off",
         "no-plusplus": "off",
-        "prefer-const": "off"
+        "prefer-const": "off",
+        "max-len": [
+            1,
+            125
+        ],
+        "no-useless-return": "off"
     }
 }
