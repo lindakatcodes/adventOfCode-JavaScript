@@ -1,3 +1,5 @@
+// Thanks to u/Globinette for the help on my reddit post that gave me the guidance I needed for part 2!!
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day07Input.txt').toString();
@@ -99,31 +101,18 @@ function buildTowers(names, tower) {
 
 function countValues(array) {
     let total = 0;
-    let addtoSet = [];
     for (let i = 0; i < array.length; i++) {
-        if (typeof array[i] === 'string') {
-            if (possibles.indexOf(array[i]) === -1) {
-                addtoSet.push('end');
-            } else {
-                let ind = possibles.indexOf(array[i]);
-                let kids = beingHeld[ind].split(', ').length;
-                addtoSet.push(`possible - ${kids} children`);
-            }
-        }
         if (typeof array[i] === 'number') {
             total += array[i];
-            addtoSet.push(array[i]);
         }
     }
-    return [total, addtoSet];
+    return total;
 }
 
-// only for testing to try and find the wrong weight
 let bIndex = possibles.indexOf(bottom[0]);
 let bHolding = beingHeld[bIndex].split(', ');
 let toCount = getW(bHolding);
 let totals = [];
-let totalSet = [];
 
 for (let i = 0; i < toCount.length; i++) {
     let nextStep = toCount[i][0];
@@ -134,10 +123,66 @@ for (let i = 0; i < toCount.length; i++) {
     }
 
     let values = countValues(toCount[i]);
-    totals.push(values[0]);
-    totalSet.push(values[1]);
+    totals.push(`base: ${nextStep} - ${values}`);
 }
 
-
 console.log(totals);
-console.log(totalSet[0].toString());
+
+
+let nIndex = possibles.indexOf(toCount[0][0]);
+let nHolding = beingHeld[nIndex].split(', ');
+let nCount = getW(nHolding);
+let nTotal = [];
+
+for (let i = 0; i < nCount.length; i++) {
+    let nextStep = nCount[i][0];
+    if (possibles.indexOf(nextStep) !== -1) {
+        let index = possibles.indexOf(nextStep);
+        let nextGroup = beingHeld[index].split(', ');
+        buildTowers(nextGroup, nCount[i]);
+    }
+
+    let values = countValues(nCount[i]);
+    nTotal.push(`base: ${nextStep} - ${values}`);
+}
+
+console.log(nTotal);
+
+
+let nIndex2 = possibles.indexOf(nCount[3][0]);
+let nHolding2 = beingHeld[nIndex2].split(', ');
+let nCount2 = getW(nHolding2);
+let nTotal2 = [];
+
+for (let i = 0; i < nCount2.length; i++) {
+    let nextStep = nCount2[i][0];
+    if (possibles.indexOf(nextStep) !== -1) {
+        let index = possibles.indexOf(nextStep);
+        let nextGroup = beingHeld[index].split(', ');
+        buildTowers(nextGroup, nCount2[i]);
+    }
+
+    let values = countValues(nCount2[i]);
+    nTotal2.push(`base: ${nextStep} - ${values}`);
+}
+
+console.log(nTotal2);
+
+let nIndex3 = possibles.indexOf(nCount2[3][0]);
+let nHolding3 = beingHeld[nIndex3].split(', ');
+let nCount3 = getW(nHolding3);
+let nTotal3 = [];
+
+for (let i = 0; i < nCount3.length; i++) {
+    let nextStep = nCount3[i][0];
+    if (possibles.indexOf(nextStep) !== -1) {
+        let index = possibles.indexOf(nextStep);
+        let nextGroup = beingHeld[index].split(', ');
+        buildTowers(nextGroup, nCount3[i]);
+    }
+
+    let values = countValues(nCount3[i]);
+    nTotal3.push(`base: ${nextStep} - ${values}`);
+}
+
+console.log(nTotal3);
