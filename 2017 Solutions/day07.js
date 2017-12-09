@@ -105,7 +105,9 @@ function countValues(array) {
             if (possibles.indexOf(array[i]) === -1) {
                 addtoSet.push('end');
             } else {
-                addtoSet.push('possible');
+                let ind = possibles.indexOf(array[i]);
+                let kids = beingHeld[ind].split(', ').length;
+                addtoSet.push(`possible - ${kids} children`);
             }
         }
         if (typeof array[i] === 'number') {
@@ -116,7 +118,7 @@ function countValues(array) {
     return [total, addtoSet];
 }
 
-
+// only for testing to try and find the wrong weight
 let bIndex = possibles.indexOf(bottom[0]);
 let bHolding = beingHeld[bIndex].split(', ');
 let toCount = getW(bHolding);
@@ -138,4 +140,4 @@ for (let i = 0; i < toCount.length; i++) {
 
 
 console.log(totals);
-
+console.log(totalSet[0].toString());
