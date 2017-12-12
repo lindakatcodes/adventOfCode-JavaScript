@@ -1,4 +1,4 @@
-// Shoutout to u/_A4_,
+// Shoutout to u/_A4_ - seeing your answer gave me a few things to try to make mine a bit neater; Also thanks to u/SixWinged for helping me find my infinite loop and getting me going again!
 
 let list = Array.from(Array(256).keys());
 const input = '130,126,1,11,140,2,255,207,18,254,246,164,29,104,0,224';
@@ -45,6 +45,8 @@ function createHash() {
     }
 }
 
+// uncomment these to get answer for part 1!
+// createHash();
 // let multiple = list[0] * list[1];
 // console.log(multiple);
 
@@ -59,14 +61,19 @@ let holder = [];
 let byte = 0;
 let allBytes = [];
 
-for (let k = 0; k < list.length; k + 16) {
-    holder = list.slice(k, 16);
+for (let k = 0; k < list.length; k += 16) {
+    holder = list.slice(k, k + 16);
     byte = holder.reduce((a, b) => a ^ b);
     allBytes.push(byte);
 }
 
-const addZero = n => (`0${n}`).substr(-2);
-allBytes.map(value => addZero(value.toString(16)).join(''));
+let hash = allBytes.map((value) => {
+    let t = value.toString(16);
+    if (t.length < 2) {
+        t = `0${t}`;
+    }
+    return t;
+}).join('');
 
-console.log(allBytes);
+console.log(hash);
 
