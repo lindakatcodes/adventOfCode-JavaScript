@@ -1,71 +1,52 @@
-// const fs = require('fs');
+// Super thanks to u/ramendik and u/acr13!!! Both of your posts helped me fix my code and get the right answer!!
 
-// const data = fs.readFileSync('../2017 Solutions/inputs/day11Input.txt').toString();
+const fs = require('fs');
 
-let path = ['se', 'sw', 'se', 'sw', 'sw']; // data.split(',');
+const data = fs.readFileSync('../2017 Solutions/inputs/day11Input.txt').toString();
 
-let start = [2, 2];
+let path = data.split(',');
+
+let start = [0, 0];
 let grid = [start];
 let coord = start;
-let previous = '';
+let highest = 0;
 
 for (let i = 0; i < path.length; i++) {
     let direction = path[i];
-    coord = directions(coord, direction, previous);
+    coord = directions(coord, direction);
+    let currSteps = Math.abs(coord[0] + coord[1]) / 2;
+    if (currSteps > highest) {
+        highest = currSteps;
+    }
     grid.push(coord);
-    previous = direction;
 }
 
-function directions(coords, dir, prev) {
+function directions(coords, dir) {
     let x = coords[0];
     let y = coords[1];
 
     switch (dir) {
     case 'n':
-        y += 1;
+        y += 2;
         break;
     case 'ne':
-        if (prev === 'nw') {
-            x += 1;
-        } else if (prev === 'se') {
-            y += 1;
-        } else {
-            x += 1;
-            y += 1;
-        }
+        x += 1;
+        y += 1;
         break;
     case 'se':
-        if (prev === 'sw') {
-            x += 1;
-        } else if (prev === 'ne') {
-            y -= 1;
-        } else {
-            x += 1;
-            y -= 1;
-        }
-        break;
-    case 's':
+        x += 1;
         y -= 1;
         break;
+    case 's':
+        y -= 2;
+        break;
     case 'sw':
-        if (prev === 'se') {
-            x -= 1;
-        } else if (prev === 'nw') {
-            y -= 1;
-        } else {
-            x -= 1;
-            y -= 1;
-        }
+        x -= 1;
+        y -= 1;
         break;
     case 'nw':
-        if (prev === 'ne') {
-            x -= 1;
-        } else if (prev === 'sw') {
-            y += 1;
-        } else {
-            x -= 1;
-            y += 1;
-        }
+        x -= 1;
+        y += 1;
         break;
     default:
         break;
@@ -75,18 +56,24 @@ function directions(coords, dir, prev) {
 
 let end = grid[grid.length - 1];
 
-let shortest = 0;
+function findDistance(first, last) {
+    let dx = last[0] - first[0];
+    let dy = last[1] - first[1];
+    let storage = 0;
 
-let dx = end[0] - start[0];
-let dy = end[1] - start[1];
-
-if (dx === dy) {
-    shortest = dx;
-} else if (Math.sign(dx) === Math.sign(dy)) {
-    shortest = Math.abs(dx + dy);
-} else {
-    shortest = Math.max(Math.abs(dx), Math.abs(dy));
+    if (dx === dy) {
+        storage = dx;
+    } else if (Math.sign(dx) === Math.sign(dy)) {
+        storage = Math.abs(dx + dy) / 2;
+    } else {
+        storage = Math.max(Math.abs(dx), Math.abs(dy));
+    }
+    return storage;
 }
 
-console.log(grid);
-console.log(shortest);
+let shortest = findDistance(start, end);
+
+console.log(`Shortest path: ${shortest}`);
+
+console.log(`Farthest path: ${highest}`);
+

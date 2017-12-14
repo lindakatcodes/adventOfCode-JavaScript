@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Launch Program",
             "cwd": "${workspaceFolder}/2017 Solutions",
-            "program": "${workspaceFolder}/2017 Solutions/day12.js"
+            "program": "${workspaceFolder}/2017 Solutions/day13.js"
         }
     ]
 }

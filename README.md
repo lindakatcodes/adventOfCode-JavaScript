@@ -26,10 +26,10 @@ My focus this year is to use JavaScript again and see if I'm able to solve more 
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 
+Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 
 
 
-Days I got at least part way but had some assistance from others: 3 / 7 / 
+Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 
 
 
 Days I couldn't solve and had to use someone else's solution:
