@@ -1,49 +1,47 @@
-
-
-function createHash(input, position, toMove, skip) {
-    let lengths = [...input].map(value => value.codePointAt(0));
-    lengths.push(17, 31, 73, 47, 23);
-
-    let row = Array.from(Array(128).keys());
-
-    for (let i = 0; i < lengths.length; i++) {
-        let segment = row.slice(position, (position + lengths[i]));
-        if (segment.length !== lengths[i]) {
-            let left = lengths[i] - segment.length;
-            let pos = 0;
-            while (left !== 0) {
-                let temp = row.slice(pos, (pos + 1));
-                segment.push(temp[0]);
-                left--;
-                pos++;
-            }
-        }
-        segment.reverse();
-        let tempPos = position;
-        for (let j = 0; j < segment.length; j++) {
-            if (tempPos > row.length - 1) {
-                tempPos = 0;
-            }
-            row.splice(tempPos, 1, segment[j]);
-            tempPos++;
-        }
-        toMove = lengths[i] + skip;
-        position = (position + toMove) % row.length;
-        skip++;
-    }
-
-    return [input, position, toMove, skip, row];
-}
+require('console.table');
 
 function generate(str) {
+    let list = Array.from(Array(256).keys());
+    const input = str;
     let position = 0;
     let toMove = 0;
     let skip = 0;
+
+    let lengths = [...input].map(value => value.codePointAt(0));
+    lengths.push(17, 31, 73, 47, 23);
+
+    function createHash() {
+        for (let i = 0; i < lengths.length; i++) {
+            let segment = list.slice(position, (position + lengths[i]));
+            if (segment.length !== lengths[i]) {
+                let left = lengths[i] - segment.length;
+                let pos = 0;
+                while (left !== 0) {
+                    let temp = list.slice(pos, (pos + 1));
+                    segment.push(temp[0]);
+                    left--;
+                    pos++;
+                }
+            }
+            segment.reverse();
+            let tempPos = position;
+            for (let j = 0; j < segment.length; j++) {
+                if (tempPos > list.length - 1) {
+                    tempPos = 0;
+                }
+                list.splice(tempPos, 1, segment[j]);
+                tempPos++;
+            }
+            toMove = lengths[i] + skip;
+            position = (position + toMove) % list.length;
+            skip++;
+        }
+    }
+
     let rounds = 64;
-    let input = str;
 
     while (rounds > 0) {
-        createHash(input, position, toMove, skip);
+        createHash();
         rounds--;
     }
 
@@ -51,8 +49,8 @@ function generate(str) {
     let byte = 0;
     let allBytes = [];
 
-    for (let k = 0; k < row.length; k += 16) {
-        holder = row.slice(k, k + 16);
+    for (let k = 0; k < list.length; k += 16) {
+        holder = list.slice(k, k + 16);
         byte = holder.reduce((a, b) => a ^ b);
         allBytes.push(byte);
     }
@@ -68,29 +66,47 @@ function generate(str) {
     return hash;
 }
 
-const key = 'flqrgnkx';
-let grid = [];
-
-for (let i = 0; i < 128; i++) {
-    let input = `${key}-${i}`;
-    let row = generate(input);
-    let output = [];
-
-    // take hash, convert to binary, cycle through binary to mark grid w/ # or .
-
-    let binStr = row.map(bit => bit.toString(2));
-
-    for (let j = 0; j < binStr.length; j++) {
-        let segment = binStr[j];
-        let opcl = '';
-        if (segment === 1) {
-            opcl = '#';
+function convert(test) {
+    let testBits = '';
+    for (let a = 0; a < test.length; a++) {
+        let val = parseInt(test[a], 16).toString(2);
+        if (val.length < 4) {
+            let len = 4 - val.length;
+            let bin = '';
+            for (let i = 0; i < len; i++) {
+                bin += '0';
+            }
+            bin += val;
+            testBits += bin;
         } else {
-            opcl = '.';
+            testBits += val;
         }
-        output.push(opcl);
     }
-    grid.push(output);
+    return testBits;
 }
 
-console.log(grid);
+
+const key = 'hxtvlmkl';
+let grid = [];
+let used = 0;
+
+for (let j = 0; j < 128; j++) {
+    let rowInput = `${key}-${j}`;
+    let rowKey = generate(rowInput);
+    let rowOutput = convert(rowKey);
+    let row = [];
+
+    for (let k = 0; k < rowOutput.length; k++) {
+        let current = parseInt(rowOutput[k], 2);
+        if (current === 1) {
+            row.push('#');
+        } else if (current === 0) {
+            row.push('.');
+        }
+    }
+    grid.push(row);
+    let count = row.filter(val => val === '#').length;
+    used += count;
+}
+
+console.log(used);
