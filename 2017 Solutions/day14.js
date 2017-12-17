@@ -86,7 +86,7 @@ function convert(test) {
 }
 
 
-const key = 'hxtvlmkl';
+const key = 'flqrgnkx';
 let grid = [];
 let used = 0;
 
@@ -104,9 +104,47 @@ for (let j = 0; j < 128; j++) {
             row.push('.');
         }
     }
-    grid.push(row);
     let count = row.filter(val => val === '#').length;
+    grid.push(row);
     used += count;
 }
 
 console.log(used);
+
+let groups = 0;
+
+for (let x = 0; x < grid.length; x++) {
+    for (let y = 0; y < grid[x].length; y++) {
+        if (grid[x][y] === '.' || grid[x][y] === 0) {
+            continue;
+        }
+        let toCheck = [[x, y]];
+
+        while (toCheck.length > 0) {
+            let [xx, yy] = toCheck.pop();
+            if (xx < 0 || yy < 0) {
+                continue;
+            }
+            if (grid[xx][yy] === 0 || grid[xx][yy] === '.') {
+                continue;
+            }
+            grid[xx][yy] = 0;
+            if (grid[yy] && grid[yy][xx - 1]) {
+                toCheck.push([xx - 1, yy]);
+            }
+            if (grid[yy] && grid[yy][xx + 1]) {
+                toCheck.push([xx + 1, yy]);
+            }
+            if (grid[yy - 1] && grid[yy - 1][xx]) {
+                toCheck.push([xx, yy - 1]);
+            }
+            if (grid[yy + 1] && grid[yy + 1][xx]) {
+                toCheck.push([xx, yy + 1]);
+            }
+        }
+
+        groups++;
+    }
+}
+
+console.log(groups);
