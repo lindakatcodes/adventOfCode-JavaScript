@@ -86,7 +86,7 @@ function convert(test) {
 }
 
 
-const key = 'flqrgnkx';
+const key = 'hxtvlmkl';
 let grid = [];
 let used = 0;
 
@@ -118,6 +118,7 @@ for (let x = 0; x < grid.length; x++) {
         if (grid[x][y] === '.' || grid[x][y] === 0) {
             continue;
         }
+
         let toCheck = [[x, y]];
 
         while (toCheck.length > 0) {
@@ -129,20 +130,19 @@ for (let x = 0; x < grid.length; x++) {
                 continue;
             }
             grid[xx][yy] = 0;
-            if (grid[yy] && grid[yy][xx - 1]) {
+            if (grid[yy] && grid[xx - 1]) {
                 toCheck.push([xx - 1, yy]);
             }
-            if (grid[yy] && grid[yy][xx + 1]) {
+            if (grid[yy] && grid[xx + 1]) {
                 toCheck.push([xx + 1, yy]);
             }
-            if (grid[yy - 1] && grid[yy - 1][xx]) {
+            if (grid[yy - 1] && grid[xx]) {
                 toCheck.push([xx, yy - 1]);
             }
-            if (grid[yy + 1] && grid[yy + 1][xx]) {
+            if (grid[yy + 1] && grid[xx]) {
                 toCheck.push([xx, yy + 1]);
             }
         }
-
         groups++;
     }
 }
