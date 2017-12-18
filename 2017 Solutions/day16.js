@@ -1,3 +1,5 @@
+// Shoutout to u/vyper248 - Your solution helped me find my cycle and get the answer without having to wait literal hours/days to go through all of the iterations! :)
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day16Input.txt').toString();
@@ -5,36 +7,40 @@ const data = fs.readFileSync('../2017 Solutions/inputs/day16Input.txt').toString
 const steps = data.split(',');
 
 let programs = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'];
+let times = 1000000000;
+let counter = 1;
+let start = programs.join('');
 
-for (let i = 0; i < steps.length; i++) {
-    let action = steps[i].split('/');
+for (let a = 0; a < times; a++) {
+    for (let i = 0; i < steps.length; i++) {
+        let breakup = steps[i].split('');
+        let action = breakup.shift();
+        let details = breakup.join('').split('/');
 
-    if (action[0] === 's') {
-        for (let a = 0; a < action[1]; a++) {
-            let step = programs.pop();
-            programs.unshift(step);
+        if (action[0] === 's') {
+            for (let a = 0; a < details[0]; a++) {
+                let step = programs.pop();
+                programs.unshift(step);
+            }
+        } else if (action[0] === 'x') {
+            let ind1 = details[0];
+            let ind2 = details[1];
+            let item1 = programs[ind1];
+            let item2 = programs[ind2];
+            [programs[ind1], programs[ind2]] = [programs[ind2], programs[ind1]];
+        } else if (action[0] === 'p') {
+            let index1 = programs.indexOf(details[0]);
+            let index2 = programs.indexOf(details[1]);
+            let part1 = programs[index1];
+            let part2 = programs[index2];
+            [programs[index1], programs[index2]] = [part2, part1];
         }
-    } else if (action[0] === 'x') {
-        let section = programs.slice(action[1], action[3] + 1);
-        let end = section.pop();
-        section.unshift(end);
-        if (section.length > 2) {
-            let begin = section.splice(1, 1);
-            section.push(begin[0]);
-        }
-        programs.splice(action[1], section.length + 1, ...section);
-    } else if (action[0] === 'p') {
-        let index1 = programs.indexOf(action[1]);
-        let index2 = programs.indexOf(action[3]);
-        let segment = programs.slice(index1, index2 + 1);
-        let last = segment.pop();
-        segment.unshift(last);
-        if (segment.length > 2) {
-            let first = segment.splice(1, 1);
-            segment.push(first[0]);
-        }
-        programs.splice(index1, index2 + 1, ...segment);
+    }
+    counter++;
+    if (programs.join('') === start) {
+        a += (Math.floor(times / (a + 1)) - 1) * (a + 1);
     }
 }
 
-console.log(programs);
+console.log(programs.join(''));
+console.log(counter);
