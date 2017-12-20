@@ -16,6 +16,7 @@
             1,
             125
         ],
-        "no-useless-return": "off"
+        "no-useless-return": "off",
+        "default-case": "off"
     }
 }
