@@ -1,3 +1,5 @@
+// thanks to u/Lrrr_ for the regex to get my initial matches paired down properly!
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day20Input.txt').toString();
