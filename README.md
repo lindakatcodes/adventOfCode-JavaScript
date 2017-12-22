@@ -29,9 +29,8 @@ For my future reference:
 Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 13 / 15 / 
 
 
-Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 14 / 16 / 17 / 
+Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 14 / 16 / 17 / 18 / 20
 
 
-Days I couldn't solve and had to use someone else's solution:
-
+Days I couldn't solve and had to use someone else's solution: 19 / 
 

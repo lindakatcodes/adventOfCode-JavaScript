@@ -86,12 +86,23 @@ function instruct2(set, id) {
 
     switch (move) {
     case 'snd':
+        if (!isNaN(parseInt(value1, 10))) {
+            if (id === 0) {
+                queue1.push(value1);
+                break;
+            } else if (id === 1) {
+                queue0.push(value1);
+                counter++;
+                console.log(counter, queue0);
+                break;
+            }
+        }
         if (id === 0) {
-            queue1.push(value1);
+            queue1.push(prog0[value1]);
         } else if (id === 1) {
-            queue0.push(value1);
+            queue0.push(prog1[value1]);
             counter++;
-            console.log(counter);
+            console.log(counter, queue0);
         }
         break;
     case 'rcv':
@@ -156,10 +167,12 @@ function instruct2(set, id) {
             if (id === 0) {
                 if (parseInt(value1, 10) > 0) {
                     jump0 = value2;
+                    break;
                 }
             } else if (id === 1) {
                 if (parseInt(value1, 10) > 0) {
                     jump1 = value2;
+                    break;
                 }
             }
         }
@@ -198,6 +211,9 @@ console.log(`Frequency: ${frequency}`);
 */
 
 for (let i = 0, j = 0; i < input.length || j < input.length; i++, j++) {
+    wait0 = false;
+    wait1 = false;
+
     if (i < input.length) {
         let step0 = input[i].split(' ');
         let name0 = step0[1];
@@ -227,15 +243,20 @@ for (let i = 0, j = 0; i < input.length || j < input.length; i++, j++) {
         }
     }
 
-    if (wait0 && wait1) {
-        i = input.length;
-    }
-    if (wait0) {
+    if (wait0 && !wait1) {
         i--;
-    }
-    if (wait1) {
+    } else if (wait1 && !wait0) {
         j--;
+    } else if (wait0 && wait1) {
+        i = input.length;
+        j = input.length;
     }
+
+    if (j > input.length || i > input.length) {
+        break;
+    }
+
+    console.log(`Counter: ${counter}; i: ${i}; j: ${j}`);
 }
 
 console.log(`Counter: ${counter}`);
