@@ -1,3 +1,5 @@
+// Super appreciative shout out to u/leadfooot for helping me debug part 2!!!
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day18Input.txt').toString();
@@ -89,19 +91,23 @@ function instruct2(set, id) {
         if (!isNaN(parseInt(value1, 10))) {
             if (id === 0) {
                 queue1.push(value1);
+                jump0 = 0;
                 break;
             } else if (id === 1) {
                 queue0.push(value1);
                 counter++;
+                jump1 = 0;
                 console.log(counter, queue0);
                 break;
             }
         }
         if (id === 0) {
             queue1.push(prog0[value1]);
+            jump0 = 0;
         } else if (id === 1) {
             queue0.push(prog1[value1]);
             counter++;
+            jump1 = 0;
             console.log(counter, queue0);
         }
         break;
@@ -109,21 +115,25 @@ function instruct2(set, id) {
         if (id === 0) {
             if (queue0.length <= 0) {
                 wait0 = true;
+                jump0 = 0;
                 break;
             }
             let val = queue0.shift();
             let name = set[1];
             prog0[name] = val;
             wait0 = false;
+            jump0 = 0;
         } else if (id === 1) {
             if (queue1.length <= 0) {
                 wait1 = true;
+                jump1 = 0;
                 break;
             }
             let val = queue1.shift();
             let name = set[1];
             prog1[name] = val;
             wait1 = false;
+            jump1 = 0;
         }
         break;
     case 'set':
@@ -255,8 +265,6 @@ for (let i = 0, j = 0; i < input.length || j < input.length; i++, j++) {
     if (j > input.length || i > input.length) {
         break;
     }
-
-    console.log(`Counter: ${counter}; i: ${i}; j: ${j}`);
 }
 
 console.log(`Counter: ${counter}`);

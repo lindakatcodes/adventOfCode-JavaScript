@@ -51,6 +51,26 @@ for (let j = 0; j < 1000; j++) {
         particles.splice(i, 1, newPart);
     }
 
+    for (let l = 1; l < particles.length; l++) {
+        let prev = particles[l - 1].match(/<(.*?)>/g);
+        let prevP = prev[0].slice(1, -1).split(',').map(n => parseInt(n, 10));
+
+        let curr = particles[l].match(/<(.*?)>/g);
+        let currP = curr[0].slice(1, -1).split(',').map(n => parseInt(n, 10));
+
+        if (prevP[0] === currP[0] && prevP[1] === currP[1] && prevP[2] === currP[2]) {
+            particles[l] += 'r';
+            particles[l - 1] += 'r';
+        }
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+        if (particles[i].slice(-1) === 'r') {
+            particles.splice(i, 1);
+            i--;
+        }
+    }
+
     let currClosest = currPos.reduce((a, b) => (a < b ? a : b));
 
     closest = currPos.indexOf(currClosest);
@@ -59,3 +79,4 @@ for (let j = 0; j < 1000; j++) {
 
 // let sorted = record.sort((a, b) => a - b);
 // console.log(`Record: ${sorted}`);
+console.log(`Particles left: ${particles.length}`);
