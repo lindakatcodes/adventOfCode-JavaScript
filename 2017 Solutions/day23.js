@@ -1,10 +1,12 @@
+// Shoutout to u/BOT-brad for part 2 - I still don't entirely get how it works, but you had the breakdwon that I understood the most, and all my other, slightly more verbose attempts weren't completing, so - thanks!
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day23Input.txt').toString();
 
 const instructions = data.split('\r\n');
 let reg = {
-    a: 1,
+    a: 0,
     b: 0,
     c: 0,
     d: 0,
@@ -64,4 +66,33 @@ for (let i = 0; i < instructions.length; i++) {
 }
 
 console.log(mulCount);
-console.log(`H is ${reg.h}`);
+
+// part 2
+
+let b = 93;
+let c = 93;
+let d = 0;
+let f = 0;
+let g = 0;
+let h = 0;
+
+b = (b * 100) + 100000;
+c = b + 17000;
+
+do {
+    f = 1;
+    d = 2;
+    for (d; d * d < b; d++) {
+        if (b % d === 0) {
+            f = 0;
+            break;
+        }
+    }
+    if (f === 0) {
+        h++;
+    }
+    g = b - c;
+    b += 17;
+} while (g !== 0);
+
+console.log(h);
