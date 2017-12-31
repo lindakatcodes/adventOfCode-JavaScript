@@ -26,7 +26,7 @@ My focus this year is to use JavaScript again and see if I'm able to solve more 
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 13 / 15 / 20 / 
+Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 13 / 15 / 20 / 22 / 
 
 
 Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 14 / 16 / 17 / 18 / 23 / 
