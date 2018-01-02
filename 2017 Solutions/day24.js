@@ -1,14 +1,15 @@
+// Shoutout to u/aiankile for helping me find where my code was slowing down and get things moving at a reasonable speed!!! Couldn't have done this one without you!
+
 const fs = require('fs');
 
 const data = fs.readFileSync('../2017 Solutions/inputs/day24Input.txt').toString();
 
 const input = data.split('\r\n');
 
-// My attempt - couldn't get it to give me the right answer for the problem and was taking too long, so had to give up in order to move on
-
 let starters = input.filter(piece => piece.match(/^0\/|\/0$/));
 let bridges = [];
 let maxLen = 0;
+let longest = 0;
 
 function getMatches(starter, connection, arr) {
     // find all the pieces that can connect with the connector
@@ -48,22 +49,16 @@ function build(start, connect, tempArr) {
         build(toCheck[j], connector, newArr);
     }
 
-    let prevArr = [];
-    if (bridges.length < 1) {
-        prevArr = '';
-    } else {
-        prevArr = bridges[bridges.length - 1].join('');
+    let total = getTotal(buildArr);
+    if (total > maxLen) {
+        maxLen = total;
     }
-    let currArr = buildArr.join('');
 
-    if (!bridges.includes(buildArr) && !prevArr.includes(currArr)) {
-        let total = getTotal(buildArr);
-        if (total > maxLen) {
-            maxLen = total;
-        }
+    if (buildArr.length >= longest) {
+        longest = buildArr.length;
         bridges.push(buildArr);
-        pushed = true;
     }
+    pushed = true;
 }
 
 function getTotal(bridge) {
@@ -81,6 +76,18 @@ for (let a = 0; a < starters.length; a++) {
     build(starters[a], 0, tempStore);
 }
 
-console.log(bridges);
 console.log(maxLen);
 
+let longBTotal = 0;
+
+for (let i = 0; i < bridges.length; i++) {
+    let testing = bridges[i];
+    if (testing.length === longest) {
+        let testTotal = getTotal(testing);
+        if (testTotal > longBTotal) {
+            longBTotal = testTotal;
+        }
+    }
+}
+
+console.log(`Longest total: ${longBTotal}`);

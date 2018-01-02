@@ -26,11 +26,12 @@ My focus this year is to use JavaScript again and see if I'm able to solve more 
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 13 / 15 / 20 / 22 / 
+Days I managed to solve on my own: 1 / 2 / 4 / 5 / 6 / 8 / 9 / 12 / 13 / 15 / 20 / 22 / 25 - 52%
 
 
-Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 14 / 16 / 17 / 18 / 23 / 
+Days I got at least part way but had some assistance from others: 3 / 7 / 10 / 11 / 14 / 16 / 17 / 18 / 23 / 24 - 40%
 
 
-Days I couldn't solve and had to use someone else's solution: 19 / 21 / 
+Days I couldn't solve and had to use someone else's solution: 19 / 21 - 8%
 
+Made it through another year! I had a ton of fun this year too. And I improved, got through more days on my own! I was also more stubborn this year, and spent longer on some puzzles than I remember doing last year, determined that I could solve them given enough time. Still ended up using help from the community a lot, which I'm incredibly thankful for. And only 2 days this year that I just could not work out what to do myself! That's some great improvement, right there. :) Until next year!
