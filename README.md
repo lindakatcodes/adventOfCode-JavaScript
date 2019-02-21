@@ -3,6 +3,8 @@ Working through adventofcode.com.
 
 -- 2018 --
 
+* Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. *
+
 Back again! Still using JavaScript, mostly because I like it and I'm still focusing my skills on this language. Same goal as previous years - I want to see if I can improve the number of days I can solve on my own! 
 
 Days I managed to solve on my own: 1 / 
