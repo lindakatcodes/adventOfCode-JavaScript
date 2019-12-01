@@ -8,8 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "cwd": "${workspaceFolder}/2018 Solutions",
-            "program": "${workspaceFolder}/2018 Solutions/day05.js"
+            "cwd": "${workspaceFolder}/2019 Solutions",
+            "program": "${workspaceFolder}/2019 Solutions/test.js"
         }
     ]
 }
