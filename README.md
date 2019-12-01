@@ -15,6 +15,8 @@ Days I got at least part way but had some assistance from others:
 
 Days I couldn't solve and had to use someone else's solution: 
 
+----------------------------------------------------------------------------------------------------------------------------------------
+
 -- 2018 --
 
 * Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. * 
