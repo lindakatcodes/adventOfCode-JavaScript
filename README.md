@@ -1,17 +1,23 @@
 # adventOfCode!
-Working through adventofcode.com.
+Working through adventofcode.com!
 
--- 2018 --
+-- 2019 --
 
-* Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. *
+Year 4 in JavaScript! Just can't get enough of these puzzles. I really missed doing this last year, so I'm committing to making the time to get all the way through this year. Super pumped!
 
-Back again! Still using JavaScript, mostly because I like it and I'm still focusing my skills on this language. Same goal as previous years - I want to see if I can improve the number of days I can solve on my own! 
+For my future reference:
 
-Days I managed to solve on my own: 1 / 
+Days I managed to solve on my own: 1 /
+
 
 Days I got at least part way but had some assistance from others: 
 
+
 Days I couldn't solve and had to use someone else's solution: 
+
+-- 2018 --
+
+* Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. * 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
