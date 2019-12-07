@@ -7,7 +7,7 @@ Year 4 in JavaScript! Just can't get enough of these puzzles. I really missed do
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 4 / 
+Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 
 
 
 Days I got at least part way but had some assistance from others: 
