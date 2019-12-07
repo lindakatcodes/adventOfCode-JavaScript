@@ -5,15 +5,6 @@ const input = [3,225,1,225,6,6,1100,1,238,225,104,0,1102,83,20,225,1102,55,83,22
 let inputCopy = [...input];
 
 // opcode 1 - get values at position 1&2 right after code, add together, store in position 3
-// opcode 2 - get values at position 1&2 right after code, multiply, store in position 3
-// opcode 3 - takes an input and stores in position 1
-// opcode 4 - outputs value at position 1
-// opcode 5 - if position 1 != 0, changes i to position 2; otherwise, does nothing
-// opcode 6 - if position 1 == 9, changes i to position 2; otherwise, does nothing
-// opcode 7 - if position 1 < position 2, position 3 is set to 1; otherwise, it's set to 0
-// opcode 8 - if position 1 == position 2, position 3 is set to 1; otherwise, it's set to 0
-// opcode 99 - stop program
-
 function opcode1 (a, b, c, p) {
   let valA = ptest(p[0], a);
   let valB = ptest(p[1], b);
@@ -21,6 +12,7 @@ function opcode1 (a, b, c, p) {
   console.log(`op1: ${valA} + ${valB} = ${valA + valB}`)
 }
 
+// opcode 2 - get values at position 1&2 right after code, multiply, store in position 3
 function opcode2 (a, b, c, p) {
   let valA = ptest(p[0], a);
   let valB = ptest(p[1], b);
@@ -28,17 +20,72 @@ function opcode2 (a, b, c, p) {
   console.log(`op2: ${valA} * ${valB} = ${valA * valB}`)
 }
 
+
+// opcode 3 - takes an input and stores in position 1
 function opcode3 (iv, s) {
   inputCopy[s] = iv;
   console.log(`op3: putting ${iv} into spot ${s}`)
 }
 
+// opcode 4 - outputs value at position 1
 function opcode4 (s, p) {
   let val = ptest(p[0], s);
   console.log(`op4: outputting ${val}`)
   return val;
 }
 
+// opcode 5 - if position 1 != 0, changes i to position 2; otherwise, does nothing
+function opcode5 (a, b, inp, p) {
+  let valA = ptest(p[0], a);
+  let valB = ptest(p[1], b);
+
+  if (valA !== 0) {
+    inp = valB;
+  }
+  console.log(`op5: inst. pointer is now ${inp}`);
+  return inp;
+}
+
+// opcode 6 - if position 1 == 0, changes i to position 2; otherwise, does nothing
+function opcode6 (a, b, inp, p) {
+  let valA = ptest(p[0], a);
+  let valB = ptest(p[1], b);
+
+  if (valA === 0) {
+    inp = valB;
+  }
+  console.log(`op6: inst. pointer is now ${inp}`);
+
+  return inp;
+}
+
+// opcode 7 - if position 1 < position 2, position 3 is set to 1; otherwise, it's set to 0
+function opcode7 (a, b, c, p) {
+  let valA = ptest(p[0], a);
+  let valB = ptest(p[1], b);
+
+  if (valA < valB) {
+    inputCopy[c] = 1;
+  } else {
+    inputCopy[c] = 0;
+  }
+  console.log(`op7: comparing if ${valA} is < ${valB}`);
+}
+
+// opcode 8 - if position 1 == position 2, position 3 is set to 1; otherwise, it's set to 0
+function opcode8 (a, b, c, p) {
+  let valA = ptest(p[0], a);
+  let valB = ptest(p[1], b);
+
+  if (valA == valB) {
+    inputCopy[c] = 1;
+  } else {
+    inputCopy[c] = 0;
+  }
+  console.log(`op8: comparing if ${valA} equals ${valB}`);
+}
+
+// allows parameter modes - checks for 0 or 1, decides if returning actual number called or position of number in input
 function ptest(param, checkval) {
   if (param == 0 || !param) {
     return inputCopy[checkval];
@@ -47,21 +94,7 @@ function ptest(param, checkval) {
   }
 }
 
-function opcode5 () {
-  
-}
-
-function opcode6 () {
-  
-}
-
-function opcode7 () {
-  
-}
-
-function opcode8 () {
-  
-}
+// opcode 99 - stop program
 
 // run through memory input, following instructions until 99 is hit
 function runProgram() {
@@ -98,22 +131,33 @@ function runProgram() {
         i++;
         break;
       case 05:
-        
+        let checkt = opcode5(ione, itwo, i, params);
+        if (i != checkt) {
+          i = checkt - 1;
+        } else {
+          i += 2;
+        }
         break;
       case 06:
-        
+        let checkf = opcode6(ione, itwo, i, params);
+        if (i != checkf) {
+          i = checkf - 1;
+        } else {
+          i += 2;
+        }
         break;
       case 07:
-      
+        opcode7(ione, itwo, ithree, params);
+        i += 3;
         break;
       case 08:
-        
+        opcode8(ione, itwo, ithree, params);
+        i += 3;
         break;
     }
-
   }
 }
 
 // for part 1, inputval is 1; for part 2, it's 5
-let inputval = 1;
+let inputval = 5;
 runProgram();
