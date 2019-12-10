@@ -281,8 +281,8 @@ function runCycle(phase) {
   }
 }
 
-for (let i = 0; i < phaseSettings2.length; i++) {
-  let phaseOrder = phaseSettings2[i];
+// for (let i = 0; i < phaseSettings2.length; i++) {
+  let phaseOrder = [9,8,7,6,5]; // phaseSettings2[i];
   haltsCalled = 0;
   do (
     runCycle(phaseOrder)
@@ -293,7 +293,7 @@ for (let i = 0; i < phaseSettings2.length; i++) {
   } else if (amps[4].output > maxSignal) {
     maxSignal = amps[4].output;
   }
-}
+// }
 
 console.log(`Max signal: ${maxSignal}`);
 
