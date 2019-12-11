@@ -1,42 +1,42 @@
 // Memory - initial puzzle input, a list of integers
-const input = [3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5];
+const input = [3,8,1001,8,10,8,105,1,0,0,21,46,55,72,85,110,191,272,353,434,99999,3,9,1002,9,5,9,1001,9,2,9,102,3,9,9,101,2,9,9,102,4,9,9,4,9,99,3,9,102,5,9,9,4,9,99,3,9,1002,9,2,9,101,2,9,9,1002,9,2,9,4,9,99,3,9,1002,9,4,9,101,3,9,9,4,9,99,3,9,1002,9,3,9,101,5,9,9,1002,9,3,9,101,3,9,9,1002,9,5,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,99,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,1001,9,2,9,4,9,99];
 
 // copy of initial input, so we can reset properly
 let inputCopy = [...input];
 
 // opcode 1 - get values at position 1&2 right after code, add together, store in position 3
-function opcode1 (a, b, c, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
-  inputCopy[c] = valA + valB;
+function opcode1 (a, b, c, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
+  dir[c] = valA + valB;
   // console.log(`op1: ${valA} + ${valB} = ${valA + valB}`)
 }
 
 // opcode 2 - get values at position 1&2 right after code, multiply, store in position 3
-function opcode2 (a, b, c, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
-  inputCopy[c] = valA * valB;
+function opcode2 (a, b, c, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
+  dir[c] = valA * valB;
   // console.log(`op2: ${valA} * ${valB} = ${valA * valB}`)
 }
 
 // opcode 3 - takes an input and stores in position 1
-function opcode3 (iv, s) {
-  inputCopy[s] = iv;
+function opcode3 (iv, s, dir) {
+  dir[s] = iv;
   // console.log(`op3: putting ${iv} into spot ${s}`)
 }
 
 // opcode 4 - outputs value at position 1
-function opcode4 (s, p) {
-  let val = ptest(p[0], s);
+function opcode4 (s, p, dir) {
+  let val = ptest(p[0], s, dir);
   // console.log(`op4: outputting ${val}`)
   return val;
 }
 
 // opcode 5 - if position 1 != 0, changes i to position 2; otherwise, does nothing
-function opcode5 (a, b, inp, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
+function opcode5 (a, b, inp, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
 
   if (valA !== 0) {
     inp = valB;
@@ -46,9 +46,9 @@ function opcode5 (a, b, inp, p) {
 }
 
 // opcode 6 - if position 1 == 0, changes i to position 2; otherwise, does nothing
-function opcode6 (a, b, inp, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
+function opcode6 (a, b, inp, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
 
   if (valA === 0) {
     inp = valB;
@@ -59,35 +59,35 @@ function opcode6 (a, b, inp, p) {
 }
 
 // opcode 7 - if position 1 < position 2, position 3 is set to 1; otherwise, it's set to 0
-function opcode7 (a, b, c, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
+function opcode7 (a, b, c, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
 
   if (valA < valB) {
-    inputCopy[c] = 1;
+    dir[c] = 1;
   } else {
-    inputCopy[c] = 0;
+    dir[c] = 0;
   }
   // console.log(`op7: comparing if ${valA} is < ${valB}`);
 }
 
 // opcode 8 - if position 1 == position 2, position 3 is set to 1; otherwise, it's set to 0
-function opcode8 (a, b, c, p) {
-  let valA = ptest(p[0], a);
-  let valB = ptest(p[1], b);
+function opcode8 (a, b, c, p, dir) {
+  let valA = ptest(p[0], a, dir);
+  let valB = ptest(p[1], b, dir);
 
   if (valA == valB) {
-    inputCopy[c] = 1;
+    dir[c] = 1;
   } else {
-    inputCopy[c] = 0;
+    dir[c] = 0;
   }
   // console.log(`op8: comparing if ${valA} equals ${valB}`);
 }
 
 // allows parameter modes - checks for 0 or 1, decides if returning actual number called or position of number in input
-function ptest(param, checkval) {
+function ptest(param, checkval, dir) {
   if (param == 0 || !param) {
-    return inputCopy[checkval];
+    return dir[checkval];
   } else if (param == 1) {
     return checkval;
   }
@@ -98,7 +98,7 @@ function ptest(param, checkval) {
 // run through memory input, following instructions until 99 is hit
 function runProgram(amp) {
   for (let i = amp.pointer; i < inputCopy.length; i++) {
-    if (inputCopy[i] === 99) {
+    if (amp.directions[i] === 99) {
       if (amp.haltCalled) {
         return amp.output;
       }
@@ -108,49 +108,49 @@ function runProgram(amp) {
       return amp.output;
     }
     
-    let instruct = inputCopy[i].toString();
+    let instruct = amp.directions[i].toString();
     let opval = parseInt(instruct.slice(-2), 10);
     let params = instruct.slice(0, -2).split('').reverse();
     
 
-    let ione = inputCopy[i+1];
-    let itwo = inputCopy[i+2];
-    let ithree = inputCopy[i+3];
+    let ione = amp.directions[i+1];
+    let itwo = amp.directions[i+2];
+    let ithree = amp.directions[i+3];
 
     switch (opval) {
       case 01:
-        opcode1(ione, itwo, ithree, params);
+        opcode1(ione, itwo, ithree, params, amp.directions);
         i += 3;
         break;
       case 02:
-        opcode2(ione, itwo, ithree, params);
+        opcode2(ione, itwo, ithree, params, amp.directions);
         i += 3;
         break;
       case 03:
         if (amp.requestedInputs === 0) {
-          opcode3(amp.inputPhase, ione);
+          opcode3(amp.inputPhase, ione, amp.directions);
           i++;
           amp.requestedInputs++;
           break;
         } else if (amp.requestedInputs === 1) {
-          opcode3(amp.inputInit, ione);
+          opcode3(amp.inputInit, ione, amp.directions);
           i++;
           amp.requestedInputs++;
           break;
         } else {
-          opcode3(amp.inputSig, ione);
+          opcode3(amp.inputSig, ione, amp.directions);
           i++;
           break;
         }
       case 04:
-        let res = opcode4(ione, params);
+        let res = opcode4(ione, params, amp.directions);
         amp.output = res;
         i++;
         amp.pointer = i + 1;
         return amp.output;
         break;
       case 05:
-        let checkt = opcode5(ione, itwo, i, params);
+        let checkt = opcode5(ione, itwo, i, params, amp.directions);
         if (i != checkt) {
           i = checkt - 1;
         } else {
@@ -158,7 +158,7 @@ function runProgram(amp) {
         }
         break;
       case 06:
-        let checkf = opcode6(ione, itwo, i, params);
+        let checkf = opcode6(ione, itwo, i, params, amp.directions);
         if (i != checkf) {
           i = checkf - 1;
         } else {
@@ -166,11 +166,11 @@ function runProgram(amp) {
         }
         break;
       case 07:
-        opcode7(ione, itwo, ithree, params);
+        opcode7(ione, itwo, ithree, params, amp.directions);
         i += 3;
         break;
       case 08:
-        opcode8(ione, itwo, ithree, params);
+        opcode8(ione, itwo, ithree, params, amp.directions);
         i += 3;
         break;
     }
@@ -218,7 +218,8 @@ let amps = [{
   'inputSig': 0,
   'requestedInputs': 0,
   'output': 0,
-  'haltCalled': false
+  'haltCalled': false,
+  'directions': [...input]
 },{
   'name': 'b',
   'pointer': 0,
@@ -227,7 +228,8 @@ let amps = [{
   'inputSig': 0,
   'requestedInputs': 0,
   'output': 0,
-  'haltCalled': false
+  'haltCalled': false,
+  'directions': [...input]
 },{
   'name': 'c',
   'pointer': 0,
@@ -236,7 +238,8 @@ let amps = [{
   'inputSig': 0,
   'requestedInputs': 0,
   'output': 0,
-  'haltCalled': false
+  'haltCalled': false,
+  'directions': [...input]
 },{
   'name': 'd',
   'pointer': 0,
@@ -245,7 +248,8 @@ let amps = [{
   'inputSig': 0,
   'requestedInputs': 0,
   'output': 0,
-  'haltCalled': false
+  'haltCalled': false,
+  'directions': [...input]
 },{
   'name': 'e',
   'pointer': 0,
@@ -254,7 +258,8 @@ let amps = [{
   'inputSig': 0,
   'requestedInputs': 0,
   'output': 0,
-  'haltCalled': false
+  'haltCalled': false,
+  'directions': [...input]
 },];
 
 let haltsCalled = 0;
@@ -281,9 +286,24 @@ function runCycle(phase) {
   }
 }
 
-// for (let i = 0; i < phaseSettings2.length; i++) {
-  let phaseOrder = [9,8,7,6,5]; // phaseSettings2[i];
+function resetValues() {
+  for (let a = 0; a < amps.length; a++) {
+    let thisAmp = amps[a];
+    thisAmp.pointer = 0;
+    thisAmp.inputPhase = 0;
+    thisAmp.inputInit = 0;
+    thisAmp.inputSig = 0;
+    thisAmp.requestedInputs = 0;
+    thisAmp.output = 0;
+    thisAmp.haltCalled = false;
+    thisAmp.directions = [...input];
+  }
+};
+
+for (let i = 0; i < phaseSettings2.length; i++) {
+  let phaseOrder = phaseSettings2[i];
   haltsCalled = 0;
+  resetValues();
   do (
     runCycle(phaseOrder)
   ); while (haltsCalled !== 5);
@@ -292,8 +312,9 @@ function runCycle(phase) {
     maxSignal = amps[4].output;
   } else if (amps[4].output > maxSignal) {
     maxSignal = amps[4].output;
+    console.log(`best phase: ${phaseOrder}`);
   }
-// }
+}
 
 console.log(`Max signal: ${maxSignal}`);
 
