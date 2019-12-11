@@ -10,7 +10,7 @@ For my future reference:
 Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 8 / 
 
 
-Days I got at least part way but had some assistance from others: 
+Days I got at least part way but had some assistance from others: 6 / 7 /
 
 
 Days I couldn't solve and had to use someone else's solution: 

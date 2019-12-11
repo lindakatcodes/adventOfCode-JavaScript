@@ -26,8 +26,8 @@ function opcode2 (a, b, c, p) {
 
 // opcode 3 - takes an input and stores in position 1
 function opcode3 (iv, s, p) {
-  let ival = ptest(p[0], iv);
-  let pos = s;
+  let ival = iv;
+  let pos = ptest(p[0], s);
   inputCopy[pos] = ival;
   // console.log(`op3: putting ${iv} into spot ${s}`)
 }
@@ -105,7 +105,7 @@ function ptest(param, checkval) {
   } else if (param == 1) {
     return checkval;
   } else if (param == 2) {
-    let baseVal = checkval + relBase;
+    let baseVal = relBase + checkval;
     return inputCopy[baseVal] ? inputCopy[baseVal] : inputCopy[baseVal] = returnVal;
   }
 }
@@ -178,6 +178,6 @@ function runProgram() {
   }
 }
 
-// for part 1, inputval is 1; for part 2, it's 5
+
 let inputval = 1;
 runProgram();
