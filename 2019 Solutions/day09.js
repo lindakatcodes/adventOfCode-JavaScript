@@ -12,7 +12,7 @@ function opcode1 (a, b, c, p) {
   let valA = ptest(p[0], a);
   let valB = ptest(p[1], b);
   inputCopy[c] = valA + valB;
-  // console.log(`op1: ${valA} + ${valB} = ${valA + valB}`)
+  console.log(`op1: ${valA} + ${valB} = ${valA + valB}`)
 }
 
 // opcode 2 - get values at position 1&2 right after code, multiply, store in position 3
@@ -20,22 +20,21 @@ function opcode2 (a, b, c, p) {
   let valA = ptest(p[0], a);
   let valB = ptest(p[1], b);
   inputCopy[c] = valA * valB;
-  // console.log(`op2: ${valA} * ${valB} = ${valA * valB}`)
+  console.log(`op2: ${valA} * ${valB} = ${valA * valB}`)
 }
 
 
 // opcode 3 - takes an input and stores in position 1
 function opcode3 (iv, s, p) {
-  let ival = iv;
   let pos = ptest(p[0], s);
-  inputCopy[pos] = ival;
-  // console.log(`op3: putting ${iv} into spot ${s}`)
+  inputCopy[pos] = iv;
+  console.log(`op3: putting ${iv} into spot ${pos}`)
 }
 
 // opcode 4 - outputs value at position 1
 function opcode4 (s, p) {
   let val = ptest(p[0], s);
-  // console.log(`op4: outputting ${val}`)
+  console.log(`op4: outputting ${val}`)
   return val;
 }
 
@@ -47,7 +46,7 @@ function opcode5 (a, b, inp, p) {
   if (valA !== 0) {
     inp = valB;
   }
-  // console.log(`op5: inst. pointer is now ${inp}`);
+  console.log(`op5: ${valA} and ${valB}, inst. pointer is now ${inp}`);
   return inp;
 }
 
@@ -59,7 +58,7 @@ function opcode6 (a, b, inp, p) {
   if (valA === 0) {
     inp = valB;
   }
-  // console.log(`op6: inst. pointer is now ${inp}`);
+  console.log(`op6: ${valA} and ${valB}, inst. pointer is now ${inp}`);
 
   return inp;
 }
@@ -74,7 +73,7 @@ function opcode7 (a, b, c, p) {
   } else {
     inputCopy[c] = 0;
   }
-  // console.log(`op7: comparing if ${valA} is < ${valB}`);
+  console.log(`op7: comparing if ${valA} is < ${valB}`);
 }
 
 // opcode 8 - if position 1 == position 2, position 3 is set to 1; otherwise, it's set to 0
@@ -87,27 +86,33 @@ function opcode8 (a, b, c, p) {
   } else {
     inputCopy[c] = 0;
   }
-  // console.log(`op8: comparing if ${valA} equals ${valB}`);
+  console.log(`op8: comparing if ${valA} equals ${valB}`);
 }
 
 function opcode9 (a, p) {
   let valA = ptest(p[0], a);
   relBase += valA;
-  // console.log(`op9: new relative base is ${relBase}`);
+  console.log(`op9: new relative base is ${relBase}`);
 }
 
 // allows parameter modes - 0 for position mode (value stored at position given); 1 for immediate mode (actual value listed); 2 for relative mode (value stored at position (actual value listed + the relative base))
 function ptest(param, checkval) {
-  let returnVal = 0;
-  
+  let returnVal;
+
   if (param == 0 || !param) {
-    return inputCopy[checkval] ? inputCopy[checkval] : inputCopy[checkval] = returnVal;
+    returnVal = inputCopy[checkval];
   } else if (param == 1) {
-    return checkval;
+    returnVal = checkval;
   } else if (param == 2) {
     let baseVal = relBase + checkval;
-    return inputCopy[baseVal] ? inputCopy[baseVal] : inputCopy[baseVal] = returnVal;
+    returnVal = inputCopy[baseVal];
   }
+
+  if (returnVal === undefined) {
+    returnVal = 0;
+  }
+
+  return returnVal;
 }
 
 // opcode 99 - stop program
