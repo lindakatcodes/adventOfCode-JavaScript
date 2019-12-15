@@ -320,36 +320,3 @@ for (let i = 0; i < phaseSettings2.length; i++) {
 
 console.log(`Max signal: ${maxSignal}`);
 
-
-// phase 1 - set each amp to run until it's done, then pass the output to the next input
-/*
-let inputval1 = 0;
-let inputval2 = 0;
-let signals = [];
-
-function runAmp(phase, input) {
-  inputval1 = phase;
-  inputval2 = input; 
-  runProgram();
-  return signals[signals.length - 1];
-}
-
-for (let i = 0; i < phaseSettings.length; i++) {
-  let phaseOrder = phaseSettings[i];
-  // run program 5 times, each time passing in the new output as the next input
-  for (let j = 0; j < amps.length; j++) {
-    // for part 1 - inputval2 needs to be reset to 0 for each run through
-     if (j === 0) {
-      inputval2 = 0;
-    } 
-    console.log(`running amp ${amps[j]}`);
-    inputval2 = runAmp(phaseOrder[j], inputval2);
-  }
-
-  if (inputval2 > maxSignal) {
-    maxSignal = inputval2;
-  }
-}
-
-console.log(`Max signal: ${maxSignal}`);
-*/
