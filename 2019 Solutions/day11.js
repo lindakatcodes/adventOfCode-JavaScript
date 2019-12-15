@@ -170,7 +170,8 @@ function runProgram() {
         break;
       case 04:
         let res = opcode4(ione, params);
-        console.log(res);
+        lastPos = i++;
+        return res;
         i++;
         break;
       case 05:
@@ -205,3 +206,104 @@ function runProgram() {
   }
 }
 
+class Panel {
+  constructor() {
+    this.color = color,
+      this.timesPainted = 0,
+      this.location = 0,
+      this.seenBefore = false
+  }
+}
+
+let shipside = [];
+let robotDir = 'u';
+let halted = false;
+let initPaints = 0;
+let inputval = 0;
+let lastPos = 0;
+
+// black - 0, white - 1
+// directions - 0 is left, 1 is right
+
+
+// start robot facing up, on black
+let start = new Panel ({
+  color = 'black',
+  location = [0,0]
+})
+
+shipside.push(start);
+
+function paintShip(place) {
+
+  if (place.color === 'black') {
+    inputval = 0;
+  } else if (place.color === 'white') {
+    inputval = 0;
+  }
+
+  let output = runProgram();
+  // paint current panel the color outputted
+  if (output[0] === 0) {
+    place.color = 'black'
+  } else if (output[0] === 1) {
+    place.color = 'white'
+  }
+
+  
+  if (place.seenBefore) {
+    place.timesPainted++;
+  } else {
+    place.timesPainted++;
+    initPaints++;
+    place.seenBefore = true;
+  }
+  
+  let newDir = 0;
+  // determine direction to turn and go that way
+  if (output[1] === 0) {
+    newDir = changeDirection('l')
+  } else if (output[1] === 1) {
+    newDir = changeDirection('r')
+  }
+
+  // work out how to show the robot's moved one?
+
+  if (!halted) {
+    paintShip()
+  }
+}
+
+function changeDirection(dir) {
+  switch (robotDir) {
+    case 'u':
+      if (dir === 'l') {
+        robotDir = 'l';
+      } else if (dir === 'r') {
+        robotDir = 'r';
+      }
+      break;
+    case 'd':
+      if (dir === 'l') {
+        robotDir = 'r';
+      } else if (dir === 'r') {
+        robotDir = 'l';
+      }
+      break;
+    case 'l':
+      if (dir === 'l') {
+        robotDir = 'd';
+      } else if (dir === 'r') {
+        robotDir = 'u';
+      }
+      break;
+    case 'r':
+      if (dir === 'l') {
+        robotDir = 'u';
+      } else if (dir === 'r') {
+        robotDir = 'd';
+      }
+      break;
+  }
+
+}
