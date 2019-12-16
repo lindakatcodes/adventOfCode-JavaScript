@@ -1,5 +1,7 @@
+const chalk = require('chalk');
+
 // Memory - initial puzzle input, a list of integers
-const input = [];
+const input = [3,8,1005,8,358,1106,0,11,0,0,0,104,1,104,0,3,8,102,-1,8,10,1001,10,1,10,4,10,1008,8,1,10,4,10,101,0,8,29,1,1104,7,10,3,8,102,-1,8,10,1001,10,1,10,4,10,108,0,8,10,4,10,1002,8,1,54,1,103,17,10,1,7,3,10,2,8,9,10,3,8,102,-1,8,10,1001,10,1,10,4,10,1008,8,1,10,4,10,102,1,8,89,1,1009,16,10,1006,0,86,1006,0,89,1006,0,35,3,8,102,-1,8,10,101,1,10,10,4,10,1008,8,0,10,4,10,102,1,8,124,1,105,8,10,1,2,0,10,1,1106,5,10,3,8,1002,8,-1,10,101,1,10,10,4,10,1008,8,0,10,4,10,1001,8,0,158,1,102,2,10,1,109,17,10,1,109,6,10,1,1003,1,10,3,8,1002,8,-1,10,101,1,10,10,4,10,108,1,8,10,4,10,1001,8,0,195,1006,0,49,1,101,5,10,1006,0,5,1,108,6,10,3,8,102,-1,8,10,1001,10,1,10,4,10,1008,8,0,10,4,10,102,1,8,232,2,1102,9,10,1,1108,9,10,3,8,1002,8,-1,10,101,1,10,10,4,10,1008,8,1,10,4,10,1002,8,1,262,1006,0,47,3,8,1002,8,-1,10,101,1,10,10,4,10,108,0,8,10,4,10,101,0,8,286,1006,0,79,2,1003,2,10,2,107,0,10,1006,0,89,3,8,1002,8,-1,10,101,1,10,10,4,10,1008,8,1,10,4,10,101,0,8,323,1006,0,51,2,5,1,10,1,6,15,10,2,1102,3,10,101,1,9,9,1007,9,905,10,1005,10,15,99,109,680,104,0,104,1,21101,838211572492,0,1,21101,0,375,0,1106,0,479,21102,1,48063328668,1,21102,386,1,0,1106,0,479,3,10,104,0,104,1,3,10,104,0,104,0,3,10,104,0,104,1,3,10,104,0,104,1,3,10,104,0,104,0,3,10,104,0,104,1,21102,1,21679533248,1,21101,0,433,0,1105,1,479,21102,235190455527,1,1,21102,444,1,0,1106,0,479,3,10,104,0,104,0,3,10,104,0,104,0,21101,0,837901247244,1,21102,1,467,0,1106,0,479,21101,0,709488169828,1,21102,1,478,0,1105,1,479,99,109,2,22102,1,-1,1,21102,1,40,2,21101,0,510,3,21102,1,500,0,1105,1,543,109,-2,2106,0,0,0,1,0,0,1,109,2,3,10,204,-1,1001,505,506,521,4,0,1001,505,1,505,108,4,505,10,1006,10,537,1102,1,0,505,109,-2,2106,0,0,0,109,4,2101,0,-1,542,1207,-3,0,10,1006,10,560,21101,0,0,-3,21201,-3,0,1,21202,-2,1,2,21102,1,1,3,21102,1,579,0,1105,1,584,109,-4,2106,0,0,109,5,1207,-3,1,10,1006,10,607,2207,-4,-2,10,1006,10,607,21202,-4,1,-4,1106,0,675,21202,-4,1,1,21201,-3,-1,2,21202,-2,2,3,21101,0,626,0,1106,0,584,22101,0,1,-4,21102,1,1,-1,2207,-4,-2,10,1006,10,645,21102,1,0,-1,22202,-2,-1,-2,2107,0,-3,10,1006,10,667,22101,0,-1,1,21102,1,667,0,105,1,542,21202,-2,-1,-2,22201,-4,-2,-4,109,-5,2105,1,0];
 
 // copy of initial input, so we can reset properly
 let inputCopy = [...input];
@@ -141,8 +143,9 @@ function ptest(param, checkval, mode) {
 
 // run through memory input, following instructions until 99 is hit
 function runProgram() {
-  for (let i = 0; i < inputCopy.length; i++) {
+  for (let i = lastPos; i < inputCopy.length; i++) {
     if (inputCopy[i] === 99) {
+      halted = true;
       break;
     }
     
@@ -170,9 +173,14 @@ function runProgram() {
         break;
       case 04:
         let res = opcode4(ione, params);
-        lastPos = i++;
-        return res;
-        i++;
+        if (inst.length === 0) {
+          inst.push(res);
+          i++;
+        } else if (inst.length === 1) {
+          inst.push(res);
+          lastPos = i+2;
+          return inst;
+        }
         break;
       case 05:
         let checkt = opcode5(ione, itwo, i, params);
@@ -208,7 +216,7 @@ function runProgram() {
 
 class Panel {
   constructor() {
-    this.color = color,
+    this.color = '',
       this.timesPainted = 0,
       this.location = 0,
       this.seenBefore = false
@@ -221,28 +229,31 @@ let halted = false;
 let initPaints = 0;
 let inputval = 0;
 let lastPos = 0;
+let inst = [];
+
+let maxX = 1;
+let maxY = 1;
 
 // black - 0, white - 1
 // directions - 0 is left, 1 is right
 
 
 // start robot facing up, on black
-let start = new Panel ({
-  color = 'black',
-  location = [0,0]
-})
-
-shipside.push(start);
+let start = new Panel ();
+  start.color = 'white';
+  start.location = [0,0];
 
 function paintShip(place) {
-
   if (place.color === 'black') {
     inputval = 0;
   } else if (place.color === 'white') {
-    inputval = 0;
+    inputval = 1;
   }
 
   let output = runProgram();
+  if (halted) {
+    return;
+  }
   // paint current panel the color outputted
   if (output[0] === 0) {
     place.color = 'black'
@@ -262,48 +273,125 @@ function paintShip(place) {
   let newDir = 0;
   // determine direction to turn and go that way
   if (output[1] === 0) {
-    newDir = changeDirection('l')
+    newDir = changeDirection('l', place.location)
   } else if (output[1] === 1) {
-    newDir = changeDirection('r')
+    newDir = changeDirection('r', place.location)
   }
 
-  // work out how to show the robot's moved one?
+  let exists = shipside.findIndex(spot => spot.location[0] === newDir[0] && spot.location[1] === newDir[1]);
 
-  if (!halted) {
-    paintShip()
+  let newSpot;
+  if (exists < 0) {
+    newSpot = new Panel ();
+      newSpot.color = 'black';
+      newSpot.location = newDir;
+    shipside.push(newSpot);
+  } else {
+    newSpot = shipside[exists];
   }
+
+  if (maxX < newDir[0]) {
+    maxX = newDir[0];
+  }
+  if (maxY < newDir[1]) {
+    maxY = newDir[1];
+  }
+
+  inst = [];
+
+  return newSpot;
 }
 
-function changeDirection(dir) {
+function changeDirection(dir, loc) {
+  let newLoc = 0;
+
   switch (robotDir) {
     case 'u':
       if (dir === 'l') {
         robotDir = 'l';
+        newLoc = [loc[0] - 1, loc[1]];
       } else if (dir === 'r') {
         robotDir = 'r';
+        newLoc = [loc[0] + 1, loc[1]];
       }
       break;
     case 'd':
       if (dir === 'l') {
         robotDir = 'r';
+        newLoc = [loc[0] + 1, loc[1]];
       } else if (dir === 'r') {
         robotDir = 'l';
+        newLoc = [loc[0] - 1, loc[1]];
       }
       break;
     case 'l':
       if (dir === 'l') {
         robotDir = 'd';
+        newLoc = [loc[0], loc[1] + 1];
       } else if (dir === 'r') {
         robotDir = 'u';
+        newLoc = [loc[0], loc[1] - 1];
       }
       break;
     case 'r':
       if (dir === 'l') {
         robotDir = 'u';
+        newLoc = [loc[0], loc[1] - 1];
       } else if (dir === 'r') {
         robotDir = 'd';
+        newLoc = [loc[0], loc[1] + 1];
       }
       break;
   }
-
+  return newLoc;
 }
+
+
+shipside.push(start);
+
+function progress(p) {
+  let currSpot = paintShip(p);
+  if (halted) {
+    return;
+  } else {
+    progress(currSpot);
+  }
+}
+
+progress(start);
+
+// part 1
+console.log(initPaints);
+
+// map final colors to reveal identifier
+let display = [];
+
+for (let y = 0; y <= maxY; y++) {
+  let row = [];
+  for (let x = 0; x <= maxX; x++) {
+    row.push('.');
+  }
+  display.push(row);
+}
+
+shipside.forEach(panel => {
+  let loc = panel.location;
+  if (panel.color === 'black') {
+    display[loc[1]][loc[0]] = chalk.black('.');
+  } else {
+    display[loc[1]][loc[0]] = chalk.white.bgWhite('#');
+  }
+})
+
+// part 2
+display.forEach(row => {
+  for (let h = 0; h < row.length; h++) {
+    if (row[h] === 0) {
+      row[h] = chalk.black(0);
+    } else if (row[h] === 1) {
+      row[h] = chalk.white.bgWhite(1);
+    }
+  }
+  row.join(',');
+  console.log(`${row}`);
+})
