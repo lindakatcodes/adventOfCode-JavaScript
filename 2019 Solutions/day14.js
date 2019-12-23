@@ -5,17 +5,26 @@ const data = fs.readFileSync('../2019 Solutions/inputs/day14input.txt').toString
 
 // Need an array of strings?
 const input = data.split('\r\n');
-const ingredients = input.map(row => row.split(/,|=>/));
+const recipes = input.map(row => row.split(/,|=>/)); 
 
-// console.log(ingredients);
+console.log (recipes);
+
+let ingredients = {};
+let fuelIndex = 0;
 
 // find the recipe for fuel
-let fuelIndex = 0;
-for (let i = 0; i < ingredients.length; i++) {
-  for (let j = 0; j < ingredients[i].length; j++) {
-    if (ingredients[i][j].includes('1 FUEL')) {
+for (let i = 0; i < recipes.length; i++) {
+  for (let j = 0; j < recipes[i].length; j++) {
+    if (recipes[i][j] === '1 FUEL') {
       fuelIndex = i;
+    }
+    
+    let split = recipes[i][j].trim().split(' ');
+
+    if (!ingredients.hasOwnProperty(split[1])) {
+      ingredients[split[1]] = 0;
     }
   }
 }
 
+console.log(ingredients);
