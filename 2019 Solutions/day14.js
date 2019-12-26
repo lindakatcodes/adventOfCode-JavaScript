@@ -20,7 +20,7 @@ for (let i = 0; i < recipes.length; i++) {
     }
     
     let split = recipes[i][j].trim().split(' ');
-
+    // build out list of possible ingredients
     if (!ingredients.hasOwnProperty(split[1])) {
       ingredients[split[1]] = 0;
     }
@@ -28,3 +28,15 @@ for (let i = 0; i < recipes.length; i++) {
 }
 
 console.log(ingredients);
+
+function reaction(rec) {
+  let breakup = rec[rec.length - 1].trim().split(' ');
+  let finalRes = breakup[breakup.length - 1];
+  let finalQty = breakup[breakup.length - 2];
+  let blocks = rec.slice(0, rec.length - 1);
+  console.log(blocks, finalQty, finalRes);
+
+  
+}
+
+reaction(recipes[5]);
