@@ -18,14 +18,29 @@ function calcPatterns(len) {
     newPattern.push(...patternSet);
     patternSet.unshift(firstVal);
     
-    for (let le = newPattern.length; le < len; le + patternSet.length) {
-      newPattern.push(...patternSet);
+
+    let setToAdd = patternSet.join('');
+    let diff = Math.round(len / patternSet.length);
+    let fullPattern = setToAdd.repeat(diff);
+    let fpArr = [];
+    for (let i = 0; i < fullPattern.length; i++) {
+      if (fullPattern[i] === '-') {
+        let next = parseInt('-' + fullPattern[i + 1], 10);
+        fpArr.push(next);
+        i++;
+      } else {
+        fpArr.push(parseInt(fullPattern[i]));
+      }
     }
+    newPattern.push(...fpArr);
+
+    // while (newPattern.length < len) {
+    //   newPattern.push(...patternSet);
+    // }
 
     if (newPattern.length !== len) {
-      for (let l = newPattern.length; l > len; l--) {
-        newPattern.pop();
-      }
+      let removeCount = newPattern.length - len;
+      newPattern.splice(len + 1, removeCount);
     }
 
     phasePatterns.push(newPattern);
