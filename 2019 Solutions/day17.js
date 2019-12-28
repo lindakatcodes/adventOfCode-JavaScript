@@ -17,40 +17,40 @@ for (let i = 0; i < output.length; i++) {
 
 // console.log(map);
 
-let mapLines = map.split('\n');
-let intersects = [];
+// let mapLines = map.split('\n');
+// let intersects = [];
 
-for (let y = 0; y < mapLines.length; y++) {
-  let currLine = mapLines[y];
-  for (let x = 0; x < currLine.length; x++) {
-    let currChar = currLine[x];
-    if (currChar === '#') {
-      let up, down, left, right;
-      if (y > 0) {
-        up = mapLines[y - 1][x];
-      }
-      if (y < mapLines.length) {
-        down = mapLines[y + 1][x];
-      }
-      if (x > 0) {
-        left = currLine[x - 1];
-      }
-      if (x < currLine.length) {
-        right = currLine[x + 1];
-      }
+// for (let y = 0; y < mapLines.length; y++) {
+//   let currLine = mapLines[y];
+//   for (let x = 0; x < currLine.length; x++) {
+//     let currChar = currLine[x];
+//     if (currChar === '#') {
+//       let up, down, left, right;
+//       if (y > 0) {
+//         up = mapLines[y - 1][x];
+//       }
+//       if (y < mapLines.length) {
+//         down = mapLines[y + 1][x];
+//       }
+//       if (x > 0) {
+//         left = currLine[x - 1];
+//       }
+//       if (x < currLine.length) {
+//         right = currLine[x + 1];
+//       }
 
-      if (up === '#' && down === '#' && left === '#' && right === '#') {
-        let param = x * y;
-        intersects.push(param);
-      }
-    }
-  }
-}
+//       if (up === '#' && down === '#' && left === '#' && right === '#') {
+//         let param = x * y;
+//         intersects.push(param);
+//       }
+//     }
+//   }
+// }
 
 // console.log(intersects);
 
-let alignment = intersects.reduce((a, b) => a + b);
-// console.log(alignment);
+// let alignment = intersects.reduce((a, b) => a + b);
+// console.log(alignment);1
 
 function processAscii(arr) {
   let fullStr = '';
@@ -63,15 +63,23 @@ function processAscii(arr) {
 }
 
 //aabcbcbcba
-let routine = '65,44,65,44,66,44,67,44,66,44,67,44,66,44,67,44,66,44,65,10';
+let routine = '65,44,65,44,66,44,67,44,66,44,67,44,66,44,67,44,66,44,65,10,';
+let A = '82,44,54,44,76,44,49,50,44,82,44,54,10,';
+let B = '76,44,49,50,44,82,44,54,44,76,44,56,44,76,44,49,50,10,';
+let C = '82,44,49,50,44,76,44,49,48,44,76,44,49,48,10,';
+let viewCam = '110,10';
 
-let A = '82,44,54,44,76,44,49,50,44,82,44,54,10';
-let B = '76,44,49,50,44,82,44,54,44,76,44,56,44,76,44,49,50,10';
-let C = '82,44,49,50,44,76,44,49,48,44,76,44,49,48,10';
-
-let logic = [routine, A, B, C, '110,10'];
 let inputCopy2 = [...input];
 
-let initMap = runProgram(inputCopy2, logic);
-let mapProcessed = processAscii(initMap);
-console.log(mapProcessed);
+let logic = routine.concat(A,B,C,viewCam).split(',');
+let len = logic.length;
+let fullOut = [];
+
+for (let i = 0; i < len; i++) {
+  let currIn = parseInt(logic[i], 10);
+  let currOut = runProgram(inputCopy2, currIn);
+  fullOut.push(currOut);
+}
+
+console.log(fullOut[fullOut.length -1]);
+

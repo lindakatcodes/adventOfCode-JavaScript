@@ -135,7 +135,6 @@ function ptest(param, checkval, mode, program) {
 // run through memory input, following instructions until 99 is hit
 function runProgram(program, inputval) {
   let output = [];
-  let inputCounter = 0;
 
   for (let i = 0; i < program.length; i++) {
     if (program[i] === 99) {
@@ -161,12 +160,7 @@ function runProgram(program, inputval) {
         i += 3;
         break;
       case 03:
-        if (typeof inputval === 'number') {
-          opcode3(inputval, ione, params, program);
-        } else if (typeof inputval === 'object') {
-          opcode3(inputval[inputCounter], ione, params, program);
-          inputCounter++;
-        }
+        opcode3(inputval, ione, params, program);
         i++;
         break;
       case 04:
