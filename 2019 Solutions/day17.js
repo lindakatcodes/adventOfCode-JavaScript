@@ -5,11 +5,11 @@ const input = [2,330,331,332,109,3914,1101,0,1182,15,1102,1,1457,24,1002,0,1,570
 
 let inputCopy = [...input];
 
-let output = runProgram(inputCopy, 0);
+let output = runProgram(inputCopy, [0]);
 
 let map = '';
 
-for (let i = 0; i < output.length; i++) {
+for (let i = 0; i < output[0].length; i++) {
   let char = String(output[i]);
   let ascii = String.fromCharCode(char);
   map = map.concat(ascii);
@@ -71,15 +71,12 @@ let viewCam = '110,10';
 
 let inputCopy2 = [...input];
 
-let logic = routine.concat(A,B,C,viewCam).split(',');
-let len = logic.length;
-let fullOut = [];
+let logic = routine.concat(A,B,C,viewCam).split(',').map(val => parseInt(val, 10));
 
-for (let i = 0; i < len; i++) {
-  let currIn = parseInt(logic[i], 10);
-  let currOut = runProgram(inputCopy2, currIn);
-  fullOut.push(currOut);
-}
+let currOut = runProgram(inputCopy2, logic);
+let log = processAscii(currOut[1]);
+let lastMap = processAscii(currOut[currOut.length - 2]);
+let dustCollected = currOut[currOut.length - 1];
 
-console.log(fullOut[fullOut.length -1]);
+console.log(dustCollected);
 

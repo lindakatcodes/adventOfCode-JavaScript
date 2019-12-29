@@ -135,6 +135,8 @@ function ptest(param, checkval, mode, program) {
 // run through memory input, following instructions until 99 is hit
 function runProgram(program, inputval) {
   let output = [];
+  let tempOut = [];
+  let inputCounter = 0;
 
   for (let i = 0; i < program.length; i++) {
     if (program[i] === 99) {
@@ -160,12 +162,19 @@ function runProgram(program, inputval) {
         i += 3;
         break;
       case 03:
-        opcode3(inputval, ione, params, program);
+        opcode3(inputval[inputCounter], ione, params, program);
+        inputCounter++;
         i++;
         break;
       case 04:
         let res = opcode4(ione, params, program);
-        output.push(res);
+        if (res === 10 && tempOut[tempOut.length - 1] === 10) {
+          tempOut.push(res);
+          output.push(tempOut);
+          tempOut = [];
+        } else {
+          tempOut.push(res);
+        }
         i++;
         break;
       case 05:
@@ -197,6 +206,10 @@ function runProgram(program, inputval) {
         i++;
         break;
     }
+  }
+
+  if (tempOut.length > 0) {
+    output.push(tempOut);
   }
   return output;
 }
