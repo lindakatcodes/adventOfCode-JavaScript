@@ -7,6 +7,7 @@ const input = data.split(',').map(Number);
 
 // copy of initial input, so we can reset properly
 let inputCopy = [...input];
+let inputval = 0;
 
 // relative base
 let relBase = 0;
@@ -255,4 +256,6 @@ for (let i = 0; i < initialRun.length; i += 3) {
 }
 
 console.log(numBlocks);
-// console.log(`${board}`);
+
+let strBoard = board.map(row => row.join(''));
+console.log(strBoard);
