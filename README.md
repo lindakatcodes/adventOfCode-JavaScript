@@ -3,14 +3,16 @@ Working through adventofcode.com!
 
 -- 2019 --
 
+*Update* - Sadly was not able to solve everything during the holiday season. However! I still want to work these problems out, so will likely be coming back to them sometime during the year.
+
 Year 4 in JavaScript! Just can't get enough of these puzzles. I really missed doing this last year, so I'm committing to making the time to get all the way through this year. Super pumped!
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 8 / 
+Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 8 / 10a / 11 / 12a / 13a / 14a / 16a / 17 / 19a / 
 
 
-Days I got at least part way but had some assistance from others: 6 / 7 /
+Days I got at least part way but had some assistance from others: 6 / 7 / 9 / 
 
 
 Days I couldn't solve and had to use someone else's solution: 
