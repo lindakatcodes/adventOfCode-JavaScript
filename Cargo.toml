@@ -1,0 +1,2 @@
+[workspace]
+members = ["./aoc_starter"]
