@@ -1,5 +1,6 @@
 use std::env;
 use std::error::Error;
+// use std::ffi::OsString;
 use std::fs;
 use std::process::Command;
 
@@ -36,11 +37,6 @@ impl Config {
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    println!(
-        "Config received: {}, {}",
-        config.current_day, config.puzzle_input
-    );
-
     // create files
     create_files(config);
     // return ok to end function
@@ -49,7 +45,6 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 // setup files
 pub fn create_files(config: Config) -> () {
-    println!("creating files!");
     // make sure the day string is 2 digits - if not, add a 0 in front of what's provided (only time it won't be 2 digits is if it's 0-9)
     let mut day: String = config.current_day;
     if day.len() != 2 {
@@ -58,7 +53,6 @@ pub fn create_files(config: Config) -> () {
     }
 
     // make the input file, if input is true
-
     let input_path: String = format!(
         "{}{}{}",
         "./2020 Solutions/inputs/day".to_string(),
@@ -81,31 +75,24 @@ pub fn create_files(config: Config) -> () {
         data_to_write = format!(
             "{}{}{}",
             "const fs = require('fs');
-            
+
 const data = fs.readFileSync('../inputs/day"
                 .to_string(),
             day,
             "input.txt').toString();
-            
 "
         );
     }
     fs::write(&file_path, data_to_write).expect("Could not create day file");
-    // set the path for the file from where this code runs
-    let full_path: String = format!(
-        "{}{}{}",
-        "./2020 Solutions/day".to_string(),
-        day,
-        ".js".to_string()
-    );
-    println!(
-        "default editor: {:?}",
-        edit::get_editor().expect("can't find an editor").to_str()
-    );
+    // test line to check what the editor path is
     println!("env path: {:?}", env::var_os("EDITOR"));
     // open the file in vscode and get started!
-    Command::new("C:\\Users\\Lindakat\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe")
-        .arg(&full_path)
+    let editor = env::var_os("EDITOR").unwrap();
+    Command::new(editor)
+        .arg(&file_path)
         .status()
         .expect("Sorry, could not open file.");
+    println!("Files ready! Go solve that puzzle!")
 }
+
+// "C:\\Users\\Lindakat\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
