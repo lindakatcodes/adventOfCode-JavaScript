@@ -1,6 +1,5 @@
 use std::env;
 use std::error::Error;
-// use std::ffi::OsString;
 use std::fs;
 use std::process::Command;
 
@@ -94,5 +93,3 @@ const data = fs.readFileSync('../inputs/day"
         .expect("Sorry, could not open file.");
     println!("Files ready! Go solve that puzzle!")
 }
-
-// "C:\\Users\\Lindakat\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
