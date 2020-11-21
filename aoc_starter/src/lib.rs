@@ -91,18 +91,21 @@ const data = fs.readFileSync('../inputs/day"
         );
     }
     fs::write(&file_path, data_to_write).expect("Could not create day file");
-    // if possible, open new file in editor
+    // set the path for the file from where this code runs
     let full_path: String = format!(
         "{}{}{}",
-        "D:\\CodeFiles\\adventOfCode-JavaScript\\2020 Solutions\\day".to_string(),
+        "./2020 Solutions/day".to_string(),
         day,
         ".js".to_string()
     );
-    edit::edit_file(&full_path).expect("Could not open file in editor");
-    // Command::new("$EDITOR")
-    //     .arg(&full_path)
-    //     .status()
-    //     .expect("Sorry, could not open file.");
+    println!(
+        "default editor: {:?}",
+        edit::get_editor().expect("can't find an editor").to_str()
+    );
+    println!("env path: {:?}", env::var_os("EDITOR"));
+    // open the file in vscode and get started!
+    Command::new("C:\\Users\\Lindakat\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe")
+        .arg(&full_path)
+        .status()
+        .expect("Sorry, could not open file.");
 }
-
-// C:\\Users\\Linda\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code
