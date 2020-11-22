@@ -6,7 +6,7 @@ use std::process::Command;
 // store our current day and puzzle input together
 pub struct Config {
     pub current_day: String,
-    pub puzzle_input: String,
+    pub puzzle_input: bool,
 }
 
 // make a new config struct with any inputs
@@ -21,10 +21,10 @@ impl Config {
             None => return Err("Please provide the day you're working on."),
         };
 
-        // not every day needs a separate input file, so make note of it one exists or not
+        // not every day needs a separate input file, so make note of if one exists or not
         let puzzle_input = match args.next() {
-            Some(arg) => arg,
-            None => return Err("Do you need a puzzle input file? Please say true or false"),
+            Some(_arg) => true,
+            None => false,
         };
 
         // return our new config struct
@@ -35,6 +35,7 @@ impl Config {
     }
 }
 
+// the main run function
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     // create files
     create_files(config);
@@ -48,7 +49,6 @@ pub fn create_files(config: Config) -> () {
     let mut day: String = config.current_day;
     if day.len() != 2 {
         day = format!("{}{}", "0".to_string(), day);
-        println!("{}", day);
     }
 
     // make the input file, if input is true
@@ -58,34 +58,36 @@ pub fn create_files(config: Config) -> () {
         day,
         "input.txt".to_string()
     );
-    if config.puzzle_input == "true" {
+    if config.puzzle_input {
         fs::File::create(&input_path).expect("Could not create input file.");
     }
-    // make a new file named day##.js
+
+    // make a new file for the day
     let file_path: String = format!(
         "{}{}{}",
         "./2020 Solutions/day".to_string(),
         day,
         ".js".to_string()
     );
-    // write the first few lines needed - require fs, and call to read and convert the input file to string (if input file exists)
-    let mut data_to_write: String = "".to_string();
-    if config.puzzle_input == "true" {
-        data_to_write = format!(
-            "{}{}{}",
-            "const fs = require('fs');
 
-const data = fs.readFileSync('../inputs/day"
+    // write the boilerplate data to our file - import needed files and packages, and write the call to read in the input file if it exists
+    let mut data_to_write: String = "import * as h from '../helpers.js'; \r\n ".to_string();
+    if config.puzzle_input {
+        let input_data = format!(
+            "{}{}{}",
+            "import { createRequire } from 'module'; \r\n const require = createRequire(import.meta.url); \r\n const fs = require('fs'); \r\n const data = fs.readFileSync('./2020 Solutions/inputs/day"
                 .to_string(),
             day,
-            "input.txt').toString();
-"
+            "input.txt').toString();"
         );
+        data_to_write = data_to_write + &input_data;
     }
     fs::write(&file_path, data_to_write).expect("Could not create day file");
-    // test line to check what the editor path is
-    println!("env path: {:?}", env::var_os("EDITOR"));
-    // open the file in vscode and get started!
+
+    // test line to check what the editor path is, if needed
+    // println!("env path: {:?}", env::var_os("EDITOR"));
+
+    // grab the editor path then open the file in vscode and get started!
     let editor = env::var_os("EDITOR").unwrap();
     Command::new(editor)
         .arg(&file_path)
