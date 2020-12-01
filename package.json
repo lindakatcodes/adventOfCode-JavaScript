@@ -2,7 +2,6 @@
   "name": "adventofcode-javascript",
   "version": "1.0.0",
   "description": "Solutions to adventOfCode",
-  "main": "",
   "type": "module",
   "scripts": {
     "setup": "cargo run"
