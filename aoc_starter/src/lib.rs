@@ -7,6 +7,7 @@ use std::process::Command;
 pub struct Config {
     pub current_day: String,
     pub puzzle_input: bool,
+    pub year: String,
 }
 
 // make a new config struct with any inputs
@@ -27,10 +28,17 @@ impl Config {
             None => false,
         };
 
+        // if a year is provided, create it using that year's folder/structure - default to current year
+        let year = match args.next() {
+            Some(arg) => arg,
+            None => "2020".to_string(),
+        };
+
         // return our new config struct
         Ok(Config {
             current_day,
             puzzle_input,
+            year,
         })
     }
 }
@@ -52,9 +60,17 @@ pub fn create_files(config: Config) -> () {
     }
 
     // make the input file, if input is true
-    let input_path: String = format!(
+    let folder_path: String = format!(
         "{}{}{}",
-        "./2020 Solutions/inputs/day".to_string(),
+        "./".to_string(),
+        config.year,
+        " Solutions/".to_string()
+    );
+
+    let input_path: String = format!(
+        "{}{}{}{}",
+        folder_path,
+        "inputs/day".to_string(),
         day,
         "input.txt".to_string()
     );
@@ -64,8 +80,9 @@ pub fn create_files(config: Config) -> () {
 
     // make a new file for the day
     let file_path: String = format!(
-        "{}{}{}",
-        "./2020 Solutions/day".to_string(),
+        "{}{}{}{}",
+        folder_path,
+        "day".to_string(),
         day,
         ".js".to_string()
     );
@@ -75,10 +92,9 @@ pub fn create_files(config: Config) -> () {
     if config.puzzle_input {
         let input_data = format!(
             "{}{}{}",
-            "import { createRequire } from 'module'; \r\n const require = createRequire(import.meta.url); \r\n const fs = require('fs'); \r\n const data = fs.readFileSync('./2020 Solutions/inputs/day"
-                .to_string(),
-            day,
-            "input.txt').toString();"
+            "import { createRequire } from 'module'; \r\n const require = createRequire(import.meta.url); \r\n const fs = require('fs'); \r\n const data = fs.readFileSync('".to_string(),
+            input_path,
+            "').toString();".to_string()
         );
         data_to_write = data_to_write + &input_data;
     }
