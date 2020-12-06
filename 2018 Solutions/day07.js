@@ -149,7 +149,7 @@ class Worker {
   assignTask(name) {
     this.task = name;
     this.busy = true;
-    const timeNeeded = alpha.indexOf(name) + 61;
+    const timeNeeded = alpha.indexOf(name) + 1;
     this.taskTime = timeNeeded;
   }
 
@@ -171,7 +171,7 @@ class Worker {
 
 const workers = [];
 const TIMESTEP = 1;
-const numWorkers = 5;
+const numWorkers = 2;
 let maxTime = 0;
 
 // populate workers group
@@ -229,6 +229,9 @@ while (order.length !== steps.size) {
     holds.forEach(() => holds.shift());
   }
   maxTime++;
+  console.log(maxTime);
+  console.log(workers);
+  console.log(order);
 }
 
 console.log(maxTime);
