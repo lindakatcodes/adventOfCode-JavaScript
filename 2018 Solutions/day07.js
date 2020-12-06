@@ -137,25 +137,102 @@ function runSteps() {
 // values take time to run
 const alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-function processStep(value) {
-  const currKey = value;
-  // only run if order does not already include currKey
-  if (!order.includes(currKey)) {
-    const currStep = steps.get(currKey);
-    // check if the currKey's reliesOn values are all completed
-    const ready = readyToStart(currStep);
-    if (ready) {
+class Worker {
+  constructor(id) {
+    this.id = id;
+    this.busy = false;
+    this.task = '';
+    this.workedTime = 0;
+    this.taskTime = 0;
+  }
+
+  assignTask(name) {
+    this.task = name;
+    this.busy = true;
+    const timeNeeded = alpha.indexOf(name) + 61;
+    this.taskTime = timeNeeded;
+  }
+
+  processTask(timePassed) {
+    this.workedTime += timePassed;
+    this.taskTime -= timePassed;
+  }
+
+  finishTask(name) {
+    this.task = '';
+    this.busy = false;
+    return name;
+  }
+}
+
+// const order = [];
+// let queue = [...start];
+// let holds = [];
+
+const workers = [];
+const TIMESTEP = 1;
+const numWorkers = 5;
+let maxTime = 0;
+
+// populate workers group
+for (let i = 1; i <= numWorkers; i++) {
+  const worker = new Worker(i);
+  workers.push(worker);
+}
+
+while (order.length !== steps.size) {
+  // see which workers are free, and grab up to that many tasks from the queue
+  const freeWorkers = workers.filter((worker) => !worker.busy);
+  let getQueueTasks = queue.splice(0, freeWorkers.length);
+
+  // first make sure all the queue tasks selected are ready to start
+  const checkTasks = getQueueTasks.map((task) => {
+    // make sure the task is ready to start, and not already in order
+    if (!order.includes(task)) {
+      const currStep = steps.get(task);
+      const ready = readyToStart(currStep);
+      if (ready) {
+        return task;
+      }
+    }
+    holds.push(task);
+    return '';
+  });
+
+  getQueueTasks = checkTasks.filter((val) => val !== '');
+
+  // assign the queue tasks to the appropriate workers
+  getQueueTasks.forEach((task, idx) => {
+    freeWorkers[idx].assignTask(task);
+  });
+
+  // get the workers currently working on projects, and advance them all one timestep
+  const busyWorkers = workers.filter((worker) => worker.busy);
+  busyWorkers.forEach((worker) => {
+    worker.processTask(TIMESTEP);
+    if (worker.taskTime === 0) {
+      const finishedTask = worker.finishTask(worker.task);
+      const currStep = steps.get(finishedTask);
       const nextSteps = currStep.whenDone;
       nextSteps.forEach((step) => {
         addKey(step);
       });
       currStep.completed = true;
-      // update steps map with new info
-      steps.set(currKey, currStep);
-      order.push(currKey);
-    } else {
-      // if it's not ready, add it to holds
-      holds.push(currKey);
+      steps.set(finishedTask, currStep);
+      order.push(finishedTask);
     }
+  });
+
+  // check queue & holds lengths
+  if (queue.length === 0 && holds.length > 0) {
+    queue = holds;
+    holds.forEach(() => holds.shift());
   }
+  maxTime++;
 }
+
+console.log(maxTime);
+console.log(workers);
+console.log(order);
+
+// 1058 is too big; 1036 is too low
