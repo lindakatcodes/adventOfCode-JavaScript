@@ -44,7 +44,6 @@ instructions.forEach((inst) => {
     steps.set(splitInst[1], newStepTwo);
   }
 });
-// console.log(steps);
 
 // set the starting value - the one that doesn't rely on anything
 const findStart = steps.keys();
@@ -184,6 +183,7 @@ while (order.length !== steps.size) {
   // see which workers are free, and grab up to that many tasks from the queue
   const freeWorkers = workers.filter((worker) => !worker.busy);
   let getQueueTasks = queue.splice(0, freeWorkers.length);
+  let workFinished = 0;
 
   // first make sure all the queue tasks selected are ready to start
   const checkTasks = getQueueTasks.map((task) => {
@@ -220,8 +220,33 @@ while (order.length !== steps.size) {
       currStep.completed = true;
       steps.set(finishedTask, currStep);
       order.push(finishedTask);
+      workFinished++;
     }
   });
+
+  // see if we finished any work - if so, go ahead and assign new tasks to whoever's free
+  if (workFinished > 0) {
+    const newFreeWorkers = workers.filter((worker) => !worker.busy);
+    getQueueTasks = queue.splice(0, newFreeWorkers.length);
+
+    const checkNewTasks = getQueueTasks.map((task) => {
+      // make sure the task is ready to start, and not already in order
+      if (!order.includes(task)) {
+        const currStep = steps.get(task);
+        const ready = readyToStart(currStep);
+        if (ready) {
+          return task;
+        }
+      }
+      holds.push(task);
+      return '';
+    });
+
+    getQueueTasks = checkNewTasks.filter((val) => val !== '');
+    getQueueTasks.forEach((task, idx) => {
+      newFreeWorkers[idx].assignTask(task);
+    });
+  }
 
   // check queue & holds lengths
   if (queue.length === 0 && holds.length > 0) {
@@ -236,6 +261,8 @@ while (order.length !== steps.size) {
 
 console.log(maxTime);
 console.log(workers);
-console.log(order);
+// console.log(order);
+// console.log(steps);
 
 // 1058 is too big; 1036 is too low
+// 1054 wrong
