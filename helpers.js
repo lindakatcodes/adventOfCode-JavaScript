@@ -8,3 +8,6 @@ export const numInput = (data) => data.split('\r\n').map(Number);
 export function lenArray(num) {
   return Array.from(Array(num).keys());
 }
+
+// removes all items from an array
+export const clearArr = (arr) => arr.splice(0, arr.length);
