@@ -63,7 +63,6 @@ let queue = [...start];
 const holds = [];
 
 function readyToStart(stepVals) {
-  // console.log(`checking ready state of ${key}`);
   const prereqs = stepVals.reliesOn;
   let completes = true;
   prereqs.forEach((step) => {
@@ -71,16 +70,22 @@ function readyToStart(stepVals) {
       completes = false;
     }
   });
-  // console.log(`${key} is ${completes ? 'ready' : 'not ready'} to start`);
   return completes;
 }
 
 function addKey(key) {
   // can simply exit if key already in queue
   if (queue.includes(key)) return;
+  // next, see if it's ready to be processed - if not, add directly to holds
+  const ready = readyToStart(steps.get(key));
+  if (!ready) {
+    if (!holds.includes(key)) {
+      holds.push(key);
+    }
+    return;
+  }
   // otherwise, find where it needs to go and add it
   const index = queue.findIndex((letter) => letter > key);
-  // console.log(`index for ${key} is ${index}`);
   // if index is -1, letter goes last
   if (index === -1) {
     queue.push(key);
@@ -250,19 +255,18 @@ while (order.length !== steps.size) {
 
   // check queue & holds lengths
   if (queue.length === 0 && holds.length > 0) {
-    queue = holds;
-    holds.forEach(() => holds.shift());
+    const readyToDo = holds.filter((letter) => {
+      const canDo = readyToStart(steps.get(letter));
+      return canDo ? letter : null;
+    });
+    queue.push(...readyToDo);
+    readyToDo.forEach((movingVal) => {
+      const index = holds.findIndex((val) => val === movingVal);
+      holds.splice(index, 1);
+    });
   }
   maxTime++;
-  // console.log(maxTime);
-  // console.log(workers);
-  // console.log(order);
 }
 
 console.log(maxTime);
 console.log(workers);
-// console.log(order);
-// console.log(steps);
-
-// 1058 is too big; 1036 is too low
-// 1054 wrong
