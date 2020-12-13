@@ -7,111 +7,71 @@ const fs = require('fs');
 const data = fs.readFileSync('./2020 Solutions/inputs/day13input.txt').toString();
 
 const parsedData = h.strInput(data);
-// const mytime = Number(parsedData[0]);
+const mytime = Number(parsedData[0]);
 const busdata = parsedData[1].split(',');
 const busIds = busdata.filter((val) => val !== 'x').map((id) => Number(id));
 // console.log(mytime, busIds);
 
 // part 1
-// const closeTimes = {};
+const closeTimes = {};
 
-// busIds.forEach((id) => {
-//   let closestTime = id;
-//   while (closestTime < mytime) {
-//     closestTime += id;
-//   }
-//   closeTimes[id] = closestTime;
-// });
+busIds.forEach((id) => {
+  let closestTime = id;
+  while (closestTime < mytime) {
+    closestTime += id;
+  }
+  closeTimes[id] = closestTime;
+});
 
-// const times = Object.values(closeTimes).sort((a, b) => a - b);
-// const closest = times.find((val) => val > mytime);
-// const closestId = Object.keys(closeTimes).find((id) => closeTimes[id] === closest);
-// const waitTime = closest - mytime;
-// console.log(waitTime * Number(closestId));
+const times = Object.values(closeTimes).sort((a, b) => a - b);
+const closest = times.find((val) => val > mytime);
+const closestId = Object.keys(closeTimes).find((id) => closeTimes[id] === closest);
+const waitTime = closest - mytime;
+console.log(waitTime * Number(closestId));
 
 // part 2
 const timeOffsets = busdata.map((val, index) => (val !== 'x' ? index : null)).filter((val) => val !== null);
 // console.log(timeOffsets);
 // console.log(busIds);
 
-let offsetFound = false;
-const lastIteration = [];
-// const startTime = 1260000;
-const startTime = 100000000000000;
-const largestVal = [...busIds].sort((a, b) => a - b).pop();
-const lvInd = busIds.findIndex((val) => val === largestVal);
-// console.log(largestVal);
+// find the first point where bus1 and bus2 line up properly
+function findMatch(start, item, offset, inc) {
+  let firstMatch = 0;
+  let matchFound = false;
+  let nextA = start;
 
-const divided = Math.floor(startTime / largestVal);
-let closestTime = divided * largestVal;
-while (closestTime <= startTime) {
-  closestTime += largestVal;
-}
-
-while (!offsetFound) {
-  const offset = timeOffsets[lvInd];
-  const firstValToMatch = closestTime - offset;
-  if (firstValToMatch % busIds[0] === 0) {
-    // potential match, check other values
-    lastIteration.push(firstValToMatch);
-    for (let j = 1; j < busIds.length; j++) {
-      const thisOffset = timeOffsets[j];
-      const thisNextVal = firstValToMatch + thisOffset;
-      const thisNextBus = busIds[j];
-      if (thisNextVal % thisNextBus !== 0) {
-        closestTime += largestVal;
-        h.clearArr(lastIteration);
-        break;
-      } else {
-        lastIteration.push(thisNextVal);
-      }
+  while (!matchFound) {
+    nextA += inc;
+    if ((nextA + offset) % item === 0) {
+      matchFound = true;
+      firstMatch = nextA;
     }
-    // if we have enough values to equal all the buses, we've found the value and can end search
-    if (lastIteration.length >= busIds.length) {
-      offsetFound = true;
-    }
-  } else {
-    // doesn't match, increase closestTime and try again
-    closestTime += largestVal;
-    console.log(closestTime);
   }
+  // console.log(firstMatch);
+  return firstMatch;
 }
-console.log(lastIteration[0]);
-console.log(lastIteration);
+// then, get the product of 1 & 2. starting from our answer for 1 above, increment each time by the product until we find a match for bus3
+function findMatches() {
+  const matches = [];
 
-// while (!offsetFound) {
-//   for (let i = busIds.length - 1; i > -1; i--) {
-//     const offset = timeOffsets[i];
-//     const nextVal = closestTime + offset;
-//     const nextBusVal = busIds[i];
-//     if (nextVal % nextBusVal !== 0) {
-//       startTime = closestTime;
-//       h.clearArr(lastIteration);
-//       closestTime += firstVal;
-//       lastIteration.push(closestTime);
-//       break;
-//     } else {
-//       for (let j = 1; j < busIds.length; j++) {
-//         const thisOffset = timeOffsets[j];
-//         const thisNextVal = closestTime + thisOffset;
-//         const thisNextBus = busIds[j];
-//         if (thisNextVal % thisNextBus !== 0) {
-//           startTime = closestTime;
-//           h.clearArr(lastIteration);
-//           closestTime += firstVal;
-//           lastIteration.push(closestTime);
-//           break;
-//         } else {
-//           lastIteration.push(thisNextVal);
-//         }
-//       }
-//       console.log(lastIteration);
-//       break;
-//     }
-//   }
-
-//   if (lastIteration.length >= busIds.length) {
-//     offsetFound = true;
-//   }
-// }
-// console.log(lastIteration[0]);
+  for (let i = 0; i < busIds.length - 1; i++) {
+    let busA;
+    let incrementor;
+    if (i === 0) {
+      busA = busIds[i];
+      incrementor = busA;
+    } else {
+      busA = matches[matches.length - 1];
+      incrementor = [...busIds.slice(0, i + 1)].reduce((a, b) => a * b);
+    }
+    const busB = busIds[i + 1];
+    const busBOffset = timeOffsets[i + 1];
+    const match1 = findMatch(busA, busB, busBOffset, incrementor);
+    matches.push(match1);
+  }
+  // console.log(matches);
+  return matches[matches.length - 1];
+}
+// repeat
+const solution = findMatches();
+console.log(solution);
