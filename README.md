@@ -6,11 +6,13 @@ Working through adventofcode.com!
 
 New year, more JavaScript! ;) Featuring the addition of a Rust CLI tool to create my daily boilerplate files, input files if needed, and an adjustment to how I store my helpers file. Should have a lot of free time this year, so *knocks on wood* I'm aiming to finish this year!
 
-Days I solved on my own: 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 /
+Days I solved on my own: 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 11 / 12 / 15
 
-Days I got part way but received assistance to finish: 10 /
+Days I got part way but received assistance to finish: 10 / 13 / 14 /
 
 Days I couldn't solve and had to use someone else's solution:
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 -- 2019 --
 
@@ -18,9 +20,9 @@ Made it farther this year, but still reached a point where I needed to focus on 
 
 For my future reference:
 
-Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 8 /
+Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 8 / 9 / 11 / 17
 
-Days I got at least part way but had some assistance from others: 6 / 7 /
+Days I got at least part way but had some assistance from others: 6 / 7 / 10 / 12 / 13 / 14 / 16 / 19 /
 
 Days I couldn't solve and had to use someone else's solution:
 
