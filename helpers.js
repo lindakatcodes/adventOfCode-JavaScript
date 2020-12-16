@@ -11,3 +11,14 @@ export function lenArray(num) {
 
 // removes all items from an array
 export const clearArr = (arr) => arr.splice(0, arr.length);
+
+// make a count object to count instances of an item
+export const counts = (arr) =>
+  arr.reduce(function (allItems, item) {
+    if (item in allItems) {
+      allItems[item]++;
+    } else {
+      allItems[item] = 1;
+    }
+    return allItems;
+  }, {});
