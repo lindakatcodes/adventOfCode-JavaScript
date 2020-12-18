@@ -10,7 +10,7 @@ Days I solved on my own: 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 11 / 12 / 15 / 16 /
 
 Days I got part way but received assistance to finish: 10 / 13 / 14 /
 
-Days I couldn't solve and had to use someone else's solution:
+Days I couldn't solve and had to use someone else's solution: 17 /
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
