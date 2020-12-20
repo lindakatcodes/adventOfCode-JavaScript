@@ -1,3 +1,5 @@
+// Today's solution is all due to Maxim in the Party Corgi Discord - another day I just could NOT get to work. This is basically exactly his solution with just the initial data pull changed, and my own comments added to help explain why it works to myself. You can find his solution here: https://github.com/Maximization/adventofcode2020/blob/main/day19/index.js
+
 import { createRequire } from 'module';
 import * as h from '../helpers.js';
 
@@ -6,119 +8,67 @@ const fs = require('fs');
 
 const data = fs.readFileSync('./2020 Solutions/inputs/day19input.txt').toString();
 
-const parsedData = h.strInput(data);
+const [unparsedRules, unparsedMessages] = data.split('\r\n\r\n');
 
-const rules = new Map();
-const messages = [];
-const knownRules = [];
+const parsedRules = unparsedRules.split('\r\n').map((rule) => rule.split(': '));
+const messages = unparsedMessages.split('\r\n');
 
-parsedData.forEach((line) => {
-  if (line.includes(':')) {
-    const split = line.split(': ');
-    const ruleNum = split[0];
-    const rule = split[1];
-    const ruleObj = {
-      name: ruleNum,
-      values: '',
-    };
-    if (rule.includes('"')) {
-      ruleObj.subRule = rule.slice(1, 2);
-      ruleObj.values = ruleObj.subRule;
-      knownRules.push(ruleNum);
-    } else if (rule.includes('|')) {
-      const ruleBits = rule.split(' | ');
-      ruleObj.subRule = [ruleBits[0].split(' '), ruleBits[1].split(' ')];
-    } else {
-      ruleObj.subRule = rule.split(' ');
-    }
+function evaluateRules(parsedRules) {
+  const rules = {};
+  const rulesToEvaluate = [...parsedRules];
 
-    rules.set(ruleNum, ruleObj);
-  } else if (line !== '') {
-    messages.push(line);
-  }
-});
+  while (rulesToEvaluate.length) {
+    for (const [index, [ruleId, ruleSpec]] of rulesToEvaluate.entries()) {
+      // gets every ruleId mentioned in the spec - each pass through will remove a number if it's already been replaced with a letter
+      const subRuleIds = ruleSpec.match(/(\d)+/g);
 
-// console.log(rules);
-
-function iterations(strArr) {
-  // console.log(strArr);
-  // use mixed to see if types of values don't match - rest of code won't work if they don't
-  const mixed = strArr.map((val) => typeof val);
-  if (!mixed.includes('string')) {
-    // TODO: handle case for 0, where strings and arrays are mixed
-  }
-  // see if we have nested arrays (piped value mixes)
-  const isOr = strArr.every((val) => val.every((bit) => Array.isArray(bit)));
-  const pairs = strArr.map((pair) => {
-    if (!isOr) {
-      // likely a direct call, can just join the two letters
-      return pair.join('');
-    }
-    // otherwise we've got an or option, so need to generate our options
-    const options = strArr.map((pairArr) => {
-      const iters = [];
-      for (let i = 0; i < pairArr.length; i++) {
-        const optionStr = `${pairArr[i][i]}`;
-        const otherSetIdx = i === 0 ? 1 : 0;
-        pairArr[otherSetIdx].forEach((otherPair) => {
-          const fullOption = `${optionStr}${otherPair}`;
-          iters.push(fullOption);
-        });
+      if (!subRuleIds) {
+        // if rule doesn't have any numbers, we strip out any extra quotes and spaces, add to the rule object, and remove from array to check
+        rules[ruleId] = ruleSpec.replaceAll('"', '').replaceAll(' ', '');
+        rulesToEvaluate.splice(index, 1);
+      } else {
+        for (const subRuleId of subRuleIds) {
+          // check if we've added this rule to the rule object yet
+          const subRuleSpec = rules[subRuleId];
+          // if so, we can substitute it
+          if (subRuleSpec) {
+            // if pipe, replacement is the value in (); otherwise the straight value
+            const replacement = subRuleSpec.includes('|') ? `(${subRuleSpec})` : subRuleSpec;
+            // find the location of the current spec in the array to evaluate, and replace the current ruleId with the new replacement
+            rulesToEvaluate[index][1] = ruleSpec.replace(new RegExp(`\\b${subRuleId}\\b`), replacement);
+          }
+        }
       }
-      return iters;
-    });
-    return options;
-  });
-  // flatten all options into a single array
-  return pairs.flat(2);
+    }
+  }
+
+  return rules;
 }
 
-// part 1 - determine which messages completely match rule 0
-// since we already know the 2 values that hold a and b, start counter at 2
-let valuesDecided = 2;
+/* Part 1 */
+(() => {
+  // figure out the possible values for each rule - effectively gives a regex to check against
+  const rules = evaluateRules(parsedRules);
+  const matchedMessages = messages.filter((message) => new RegExp(`^${rules[0]}$`).test(message));
+  console.log('Answer part 1:', matchedMessages.length);
+})();
 
-while (valuesDecided !== rules.size) {
-  for (const [key, value] of rules.entries()) {
-    // skip over the rules we already have values for
-    if (knownRules.includes(key)) break;
-    const rulestoFollow = value.subRule;
-    const isOr = Array.isArray(rulestoFollow[0]);
-    let subStrings = [];
-    let isComplete = false;
-    if (!isOr) {
-      // do we already know the value it needs? if so, set it
-      subStrings = rulestoFollow.map((rule) => {
-        const isKnown = knownRules.includes(rule);
-        if (isKnown) {
-          const knownRule = rules.get(rule).values;
-          return knownRule;
-        }
-        return false;
-      });
-      isComplete = !subStrings.includes(false);
-    } else {
-      subStrings = rulestoFollow.map((pair) => {
-        const pairStrings = pair.map((rule) => {
-          const isKnown = knownRules.includes(rule);
-          if (isKnown) {
-            const knownRule = rules.get(rule).values;
-            return knownRule;
-          }
-          return false;
-        });
-        isComplete = ![...pairStrings].includes(false);
-        return pairStrings;
-      });
-    }
-    // console.log(subStrings);
-    if (isComplete) {
-      value.values = iterations(subStrings);
-      rules.set(key, value);
-      valuesDecided++;
-      knownRules.push(key);
-    }
-  }
-} // end of while
+/* Part 2 */
+(() => {
+  const rules = evaluateRules(parsedRules);
 
-console.log(rules);
-// console.log(valuesDecided);
+  // since the two new rules use recursion on themselves, this could go on infinitely. So we run it once, update the rules, and run it again, and keep doing that until the two numbers match (any runs after that won't change the result we get)
+  let noOfMatchedMessages;
+  let newNoOfMatchedMessages;
+  do {
+    noOfMatchedMessages = messages.filter((message) => new RegExp(`^${rules[0]}$`).test(message)).length;
+
+    rules[8] = `(${rules[42]})|(${rules[42]})(${rules[8]})`;
+    rules[11] = `(${rules[42]})(${rules[31]})|(${rules[42]})(${rules[11]})(${rules[31]})`;
+    rules[0] = `(${rules[8]})(${rules[11]})`;
+
+    newNoOfMatchedMessages = messages.filter((message) => new RegExp(`^${rules[0]}$`).test(message)).length;
+  } while (noOfMatchedMessages !== newNoOfMatchedMessages);
+
+  console.log('Answer part 2:', noOfMatchedMessages);
+})();
