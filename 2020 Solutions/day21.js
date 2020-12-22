@@ -1,3 +1,5 @@
+// part 2 still missing  - counts are off somehow. Need to come back and figure a different way to determine which allergens can be possible for each ingredient, then the rest of the code should work
+
 import { createRequire } from 'module';
 import * as h from '../helpers.js';
 
@@ -80,7 +82,7 @@ allergens.forEach((allergy) => {
 
 // sort the counts so the lowest numbers are at the front
 const sortedAllergenCount = [...allergenCount].sort((first, second) => first[1] - second[1]);
-console.log(sortedAllergenCount);
+// console.log(sortedAllergenCount);
 
 // // loop over the sorted allergen counts
 // sortedAllergenCount.forEach((allergen) => {
@@ -203,4 +205,6 @@ const cdil = sortedDanger
     return `${name}`;
   })
   .join('');
-// console.log(cdil);
+console.log(cdil);
+
+// correct should be: vmhqr,qxfzc,khpdjv,gnrpml,xrmxxvn,rfmvh,rdfr,jxh
