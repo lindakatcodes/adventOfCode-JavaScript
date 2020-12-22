@@ -63,6 +63,7 @@ foods.forEach((foodList) => {
       const currentIngredient = {};
       currentIngredient.appearance = 1;
       currentIngredient.knownAllergen = '';
+      currentIngredient.likelyAllergen = '';
       currentIngredient.possibleAllergens = {};
       listContains.forEach((allergy) => (currentIngredient.possibleAllergens[allergy] = 1));
       ingredients[item] = currentIngredient;
@@ -90,19 +91,8 @@ allergens.forEach((allergy) => {
     }
     return 0;
   });
-  // console.log(sortedFoods);
-  // find the one with the highest count that does not have a higher count for another allergen
-  const likelyFirst = sortedFoods.find((value) => {
-    const currentAllergenCount = value[1].possibleAllergens[allergy];
-    let isHighest = true;
-    Object.values(value[1].possibleAllergens).forEach((item) => {
-      if (item > currentAllergenCount) {
-        isHighest = false;
-      }
-    });
-    if (isHighest) return value;
-  });
-  // console.log(likelyFirst);
+  // whoever has the highest has it
+  const likelyFirst = sortedFoods[0];
   // for that ingredient, mark it's knownAllergen as the current allergen
   const updatedObject = likelyFirst[1];
   updatedObject.knownAllergen = allergy;
@@ -123,7 +113,7 @@ allergens.forEach((allergy) => {
 // part 1 - now that we know which allergen goes to what ingredient, we can get the count of all the ingredients that do not have an allergen
 const noAllergens = Object.values(ingredients).filter((item) => !item.knownAllergen);
 const noAllergenCount = noAllergens.map((value) => value.appearance).reduce((a, b) => a + b);
-// console.log(noAllergenCount);
+console.log(noAllergenCount);
 
 // part 2 - we need a list of dangerous ingredients, sorted by their allergens alphabetically
 // so first, filter for the ingredients with allergens
@@ -150,6 +140,4 @@ const cdil = sortedDanger
     return `${name}`;
   })
   .join('');
-console.log(cdil);
-
-// wrong: vmhqr,nvfkp,rfmvh,gnrpml,bxfbb,rdfr,xrmxxvn,jxh
+// console.log(cdil);
