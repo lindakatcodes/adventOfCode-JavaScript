@@ -88,11 +88,11 @@ pub fn create_files(config: Config) -> () {
     );
 
     // write the boilerplate data to our file - import needed files and packages, and write the call to read in the input file if it exists
-    let mut data_to_write: String = "import * as h from '../helpers.js'; \r\n ".to_string();
+    let mut data_to_write: String = "import * as c from '../chalk_styles.js';\r\nimport * as h from '../helpers.js';\r\n\r\n".to_string();
     if config.puzzle_input {
         let input_data = format!(
             "{}{}{}",
-            "import { createRequire } from 'module'; \r\n const require = createRequire(import.meta.url); \r\n const fs = require('fs'); \r\n const data = fs.readFileSync('".to_string(),
+            "import { readFileSync } from 'fs';\r\nconst data = readFileSync('".to_string(),
             input_path,
             "').toString();".to_string()
         );
