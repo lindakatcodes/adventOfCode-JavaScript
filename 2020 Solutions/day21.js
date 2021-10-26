@@ -1,3 +1,5 @@
+// part 2 still missing  - counts are off somehow. Need to come back and figure a different way to determine which allergens can be possible for each ingredient, then the rest of the code should work
+
 import { createRequire } from 'module';
 import * as h from '../helpers.js';
 
@@ -71,7 +73,70 @@ foods.forEach((foodList) => {
   });
 });
 
-// now go through each allergen and figure out which ingredient causes it
+// get counts for how often an allergen shows up
+const allergenCount = [];
+allergens.forEach((allergy) => {
+  const foodsWithAllergen = Object.values(ingredients).filter((item) => Object.keys(item.possibleAllergens).includes(allergy));
+  allergenCount.push([allergy, foodsWithAllergen.length]);
+});
+
+// sort the counts so the lowest numbers are at the front
+const sortedAllergenCount = [...allergenCount].sort((first, second) => first[1] - second[1]);
+// console.log(sortedAllergenCount);
+
+// // loop over the sorted allergen counts
+// sortedAllergenCount.forEach((allergen) => {
+//   // grab the ingredients that containt this allergen
+//   const foodsToCheck = Object.entries(ingredients).filter((item) => {
+//     const itemAllergies = item[1].possibleAllergens;
+//     return Object.keys(itemAllergies).includes(allergen[0]);
+//   });
+//   // console.log(foodsToCheck);
+//   // check the counts for each item - looking for the ingredient that either only has this allergen or has the highest count (and doesn't have another count that's higher)
+//   if (foodsToCheck.length === 1) {
+//     // only one possibility, so set it
+//     const foodObj = ingredients[foodsToCheck[0][0]];
+//     foodObj.knownAllergen = allergen[0];
+//     foodObj.possibleAllergens = [];
+//   } else {
+//     // otherwise we need to check all the items
+//     const foodAllergenCounts = foodsToCheck.map((item) => {
+//       const allergenData = Object.entries(item[1].possibleAllergens);
+//       return allergenData;
+//     });
+//     // console.log(foodAllergenCounts);
+
+//     foodAllergenCounts.forEach((bit, idx) => {
+//       // console.log(bit);
+//       const allergyIdx = bit.findIndex((item) => item[0] === allergen[0]);
+//       const allergyCount = bit[allergyIdx][1];
+//       // console.log(allergyCount);
+//       const otherHigher = bit.map((word, i) => !!(word[1] > allergyCount && i !== allergyIdx));
+//       // console.log(otherHigher);
+//       if (!otherHigher.includes(true)) {
+//         // this is our ingredient - update it
+//         const foodObj = ingredients[foodsToCheck[idx][0]];
+//         foodObj.knownAllergen = allergen[0];
+//         foodObj.possibleAllergens = [];
+
+//         // also remove the allergen from the other possible lists so we can narrow down further
+//         foodsToCheck.splice(idx, 1);
+//         foodsToCheck.forEach((item) => {
+//           const itemObj = ingredients[item[0]];
+//           const allergyArr = Object.keys(itemObj.possibleAllergens);
+//           const removeIdx = allergyArr.indexOf(allergen[0]);
+//           const cleanedAllergyArr = [...allergyArr.slice(0, removeIdx), ...allergyArr.slice(removeIdx + 1)];
+//           const updatedAllergenList = cleanedAllergyArr.map((word) => [word, itemObj.possibleAllergens[word]]);
+//           itemObj.possibleAllergens = Object.fromEntries(updatedAllergenList);
+//         });
+//       }
+//     });
+//   }
+// });
+
+// console.log(ingredients);
+
+// // now go through each allergen and figure out which ingredient causes it
 allergens.forEach((allergy) => {
   // filter the ingredient list for any that have it listed as possible
   const foodWithAllergen = Object.entries(ingredients).filter((item) => {
@@ -140,4 +205,6 @@ const cdil = sortedDanger
     return `${name}`;
   })
   .join('');
-// console.log(cdil);
+console.log(cdil);
+
+// correct should be: vmhqr,qxfzc,khpdjv,gnrpml,xrmxxvn,rfmvh,rdfr,jxh
