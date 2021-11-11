@@ -60,17 +60,11 @@ pub fn create_files(config: Config) -> () {
     }
 
     // make the input file, if input is true
-    let folder_path: String = format!(
-        "{}{}{}",
-        "./".to_string(),
-        config.year,
-        " Solutions/".to_string()
-    );
-
     let input_path: String = format!(
-        "{}{}{}{}",
-        folder_path,
-        "inputs/day".to_string(),
+        "{}{}{}{}{}",
+        "./aoc_server/public/".to_string(),
+        config.year,
+        "Inputs/day".to_string(),
         day,
         "input.txt".to_string()
     );
@@ -79,22 +73,32 @@ pub fn create_files(config: Config) -> () {
     }
 
     // make a new file for the day
+    let folder_path: String = format!(
+      "{}{}{}",
+      "./".to_string(),
+      config.year,
+      " Solutions/".to_string()
+  );
+
     let file_path: String = format!(
         "{}{}{}{}",
         folder_path,
         "day".to_string(),
         day,
-        ".js".to_string()
+        ".ts".to_string()
     );
 
     // write the boilerplate data to our file - import needed files and packages, and write the call to read in the input file if it exists
-    let mut data_to_write: String = "import * as c from '../chalk_styles.js';\r\nimport * as h from '../helpers.js';\r\n\r\n".to_string();
+    let mut data_to_write: String = "import * as h from '../helpers';\r\n\r\n".to_string();
     if config.puzzle_input {
         let input_data = format!(
-            "{}{}{}",
-            "import { readFileSync } from 'fs';\r\nconst data = readFileSync('".to_string(),
-            input_path,
-            "').toString();".to_string()
+            "{}{}{}{}{}{}",
+            "const data: string = await h.readData('./".to_string(),
+            config.year,
+            "Inputs/day".to_string(),
+            day,
+            "input.txt".to_string(),
+            "');".to_string()
         );
         data_to_write = data_to_write + &input_data;
     }

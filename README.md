@@ -11,9 +11,15 @@ npm run setup <day> [<input> <year>]
 ```
 
 Parameter types:
-day - number
-input - boolean
-year - number
+day - number; puzzle day you're on
+input - boolean; if an input file is needed
+year - number; the year you're currently working on
+
+This project also has a small web server using Vite and Vue 3, to serve the puzzle files. Each day, you'll need to update the `App.vue` file in the `aoc_server` folder to import the correct day's puzzle file. I'm working on a way to automate the update of this, but haven't worked it out yet!
+
+## Year Logs
+
+---
 
 -- 2020 --
 
