@@ -2,9 +2,22 @@
 
 Working through adventofcode.com!
 
+## How to Run
+
+This project uses Rust to create the setup files for each day. A file for the day's puzzle is created, and potentially an input file as well.
+
+```node
+npm run setup <day> [<input> <year>]
+```
+
+Parameter types:
+day - number
+input - boolean
+year - number
+
 -- 2020 --
 
-New year, more JavaScript! ;) Featuring the addition of a Rust CLI tool to create my daily boilerplate files, input files if needed, and an adjustment to how I store my helpers file. Should have a lot of free time this year, so *knocks on wood* I'm aiming to finish this year!
+New year, more JavaScript! ;) Featuring the addition of a Rust CLI tool to create my daily boilerplate files, input files if needed, and an adjustment to how I store my helpers file. Should have a lot of free time this year, so _knocks on wood_ I'm aiming to finish this year!
 
 Days I solved on my own: 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 11 / 12 / 15 / 16 / 18 / 22 / 24 / 25 - 68%
 
@@ -12,7 +25,7 @@ Days I got part way but received assistance to finish: 10 / 13 / 14 / 20 / 21 / 
 
 Days I couldn't solve and had to use someone else's solution: 17 / 19 - 8%
 
-----------------------------------------------------------------------------------------------------------------------------------------
+---
 
 -- 2019 --
 
@@ -26,19 +39,19 @@ Days I got at least part way but had some assistance from others: 6 / 7 / 10 / 1
 
 Days I couldn't solve and had to use someone else's solution:
 
-----------------------------------------------------------------------------------------------------------------------------------------
+---
 
 -- 2018 --
 
-* Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. *
+- Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. \*
 
-Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 6 /  
+Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 6 /
 
 Days I got at least part way but had some assistance from others: 7 /
 
 Days I couldn't solve and had to use someone else's solution:
 
-----------------------------------------------------------------------------------------------------------------------------------------
+---
 
 -- 2017 --
 
@@ -54,7 +67,7 @@ Days I couldn't solve and had to use someone else's solution: 19 / 21 - 8%
 
 Made it through another year! I had a ton of fun this year too. And I improved, got through more days on my own! I was also more stubborn this year, and spent longer on some puzzles than I remember doing last year, determined that I could solve them given enough time. Still ended up using help from the community a lot, which I'm incredibly thankful for. And only 2 days this year that I just could not work out what to do myself! That's some great improvement, right there. :) Until next year!
 
-----------------------------------------------------------------------------------------------------------------------------------------
+---
 
 -- 2016 --
 

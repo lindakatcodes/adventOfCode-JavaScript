@@ -4,9 +4,7 @@
   "description": "Solutions to adventOfCode",
   "type": "module",
   "scripts": {
-    "setup": "cargo run",
-    "dev": "nodemon --config nodemon.json src/index.ts",
-    "dev:debug": "nodemon --config nodemon.json --inspect-brk src/index.ts"
+    "setup": "cargo run"
   },
   "repository": {
     "type": "git",
