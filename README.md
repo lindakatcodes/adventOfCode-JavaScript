@@ -19,6 +19,16 @@ This project also has a small web server using Vite and Vue 3, to serve the puzz
 
 ## Year Logs
 
+-- 2021 --
+
+It's time!! Working on using Typescript this year, so I can enhance those skills. Let's goooo!!! :)
+
+Days I solved on my own:
+
+Days I got part way but received assistance to finish:
+
+Days I couldn't solve and had to use someone else's solution:
+
 ---
 
 -- 2020 --
@@ -49,7 +59,7 @@ Days I couldn't solve and had to use someone else's solution:
 
 -- 2018 --
 
-- Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year. \*
+- Note: Due to other commitments, I wasn't able to finish this year. I intend to still go through the problems at some point, but for now, I don't have much to show for this year.
 
 Days I managed to solve on my own: 1 / 2 / 3 / 4 / 5 / 6 /
 
