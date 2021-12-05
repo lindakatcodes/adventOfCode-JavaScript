@@ -7,7 +7,7 @@ export const readData = async function (filePath: string) {
 // Splits the input into an array of strings
 export const strInput = (data: string): string[] => data.split("\n");
 
-export const splitOnSpaces = (data: any) => data.split("\r\n\r\n");
+export const splitOnSpaces = (data: string): string[] => data.split("\n\n");
 
 // Splits a single string input into an array of numbers
 export const numInput = (data: string): number[] =>

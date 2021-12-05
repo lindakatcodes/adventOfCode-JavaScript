@@ -31,7 +31,7 @@ impl Config {
         // if a year is provided, create it using that year's folder/structure - default to current year
         let year = match args.next() {
             Some(arg) => arg,
-            None => "2020".to_string(),
+            None => "2021".to_string(),
         };
 
         // return our new config struct
