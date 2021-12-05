@@ -3,150 +3,149 @@ import * as h from "../helpers";
 const data: string = await h.readData("./2021Inputs/day04input.txt");
 const separatedData = h.splitOnSpaces(data);
 const pickedNumbers = separatedData.splice(0, 1)[0].split(",");
-// const boards = [];
-const winningMoveCounts: number[] = [];
 
-interface bingoPlace {
+interface Position {
+  value: number;
   position: number[];
   marked: boolean;
 }
 
 interface Board {
-  data: string[];
+  data: Position[][];
   winningNumber: number;
-  score: number;
   movesToWin: number;
+  score: number;
 }
 
 const boards = separatedData.map((value) => {
-  const cleanedBoard = h.strInput(value).map((boardLine) => {
-    return boardLine.split(/(?:\s+)/g).map((val) => +val);
+  const boardPreClean = h.strInput(value);
+  const cleanedBoard: Board = {
+    data: [],
+    winningNumber: 0,
+    movesToWin: 0,
+    score: 0,
+  };
+  boardPreClean.map((boardLine, rowIndex) => {
+    const boardValues: number[] = boardLine
+      .trim()
+      .split(/(?:\s+)/g)
+      .map((val) => +val);
+    const row: Position[] = [];
+    for (let colIndex = 0; colIndex < boardValues.length; colIndex++) {
+      const valuePosition: Position = {
+        value: boardValues[colIndex],
+        position: [rowIndex, colIndex],
+        marked: false,
+      };
+      row.push(valuePosition);
+    }
+    cleanedBoard.data.push(row);
   });
   return cleanedBoard;
 });
 
 console.log(boards);
 
-// interface BoardData {
-//   [index: string]: number[];
-//   row1: number[];
-//   row2: number[];
-//   row3: number[];
-//   row4: number[];
-//   row5: number[];
-//   col1: number[];
-//   col2: number[];
-//   col3: number[];
-//   col4: number[];
-//   col5: number[];
-// }
+function checkBoard(board: Board) {
+  // start looping over picked numbers
+  for (let i = 0; i < pickedNumbers.length; i++) {
+    const currentNumber = +pickedNumbers[i];
+    // for each number, search each row in the board to see if that value exists
+    // if so, get that position and mark it as marked
+    board.data.forEach((row) => {
+      const foundNumberPosition: Position | null =
+        row.find((position) => position.value === currentNumber) ?? null;
+      if (foundNumberPosition) {
+        foundNumberPosition.marked = true;
+        return;
+      }
+    });
+    // if the index is > 5 (min needed to possible have a full bingo), call the check for bingo function
+    let bingoFound: boolean = false;
+    if (i >= 5) {
+      bingoFound = checkForBingo(board);
+    }
+    // if we have a win, set the winning number, get the score, and break out of the function
+    if (bingoFound) {
+      board.winningNumber = currentNumber;
+      board.movesToWin = i + 1;
+      board.score = calculateSum(board) * currentNumber;
+      if (board.movesToWin < lowestMovesToWin) {
+        lowestMovesToWin = board.movesToWin;
+      }
+      if (board.movesToWin > highestMovesToWin) {
+        highestMovesToWin = board.movesToWin;
+      }
+      return;
+    }
+  }
+}
 
-// interface BoardCounts {
-//   [index: string]: number;
-//   row1Picked: number;
-//   row2Picked: number;
-//   row3Picked: number;
-//   row4Picked: number;
-//   row5Picked: number;
-//   col1Picked: number;
-//   col2Picked: number;
-//   col3Picked: number;
-//   col4Picked: number;
-//   col5Picked: number;
-// }
+function checkForBingo(board: Board): boolean {
+  let result: boolean = false;
+  let columns: Position[][] = [[], [], [], [], []];
+  // go over each row and see if all are marked
+  board.data.forEach((row) => {
+    let marks: number = 0;
+    row.forEach((value) => {
+      if (value.marked) {
+        marks++;
+      }
+      columns[value.position[1]].push(value);
+    });
+    if (marks === 5) {
+      result = true;
+      return result;
+    }
+  });
+  // go over each column and see if all are marked
+  columns.forEach((col) => {
+    let marks: number = 0;
+    col.forEach((value) => {
+      if (value.marked) {
+        marks++;
+      }
+    });
+    if (marks === 5) {
+      result = true;
+      return result;
+    }
+  });
 
-// separatedData.forEach((value: string, index: number) => {
-//   let currentBoard: Board = {
-//     data: {
-//       row1: [],
-//       row2: [],
-//       row3: [],
-//       row4: [],
-//       row5: [],
-//       col1: [],
-//       col2: [],
-//       col3: [],
-//       col4: [],
-//       col5: [],
-//     },
-//     winningNumber: 0,
-//     score: 0,
-//     movesToWin: 0,
-//   };
-//   if (index !== 0) {
-//     const cleanedBoard = h.strInput(value);
-//     cleanedBoard.forEach((boardLine, lineIndex) => {
-//       const row = boardLine
-//         .split(/(\d+)/g)
-//         .map((val) => +val)
-//         .filter((val) => val !== 0);
-//       const rowName = `row${lineIndex + 1}`;
-//       currentBoard.data[rowName] = row;
-//       for (let i = 0; i < row.length; i++) {
-//         let colName = `col${i + 1}`;
-//         currentBoard.data[colName].push(row[i]);
-//       }
-//     });
-//     boards.push(currentBoard);
-//   }
-// });
+  // return results
+  return result;
+}
 
-// function checkBoards() {
-//   boards.forEach((board: Board) => {
-//     let movesToWin: number = pickedNumbers.length;
-//     for (let i = 0; i < pickedNumbers.length; i++) {
-//       if (board.winningNumber > 0) return;
-//       let currentNumber = +pickedNumbers[i];
-//       for (const line in board.data) {
-//         const lineData = board.data[line];
-//         if (lineData.includes(currentNumber)) {
-//           const removePos = lineData.indexOf(currentNumber);
-//           lineData.splice(removePos, 1);
-//         }
-//         if (lineData.length === 0) {
-//           // found a winning line
-//           if (i + 1 < movesToWin) {
-//             winningMoveCounts.push(i + 1);
-//             board.winningNumber = currentNumber;
-//             board.movesToWin = i + 1;
-//             calculateScore(board, currentNumber, line);
-//           }
-//         }
-//       }
-//     }
-//   });
-// }
+function calculateSum(board: Board): number {
+  let valuesToSum: number[] = [];
+  // go over each row
+  board.data.map((row) => {
+    row.forEach((value) => {
+      // if position is not marked, add value to running sum
+      if (!value.marked) {
+        valuesToSum.push(value.value);
+      }
+    });
+  });
+  // once all the rows have been checked, combine the numbers for the final answer
+  const sum: number = valuesToSum.reduce((prev, next) => prev + next);
+  return sum;
+}
 
-// function calculateScore(
-//   board: Board,
-//   winningNumber: number,
-//   lineType: string
-// ): void {
-//   let sum: number = 0;
-//   for (const line in board.data) {
-//     const lineData = board.data[line];
-//     if (lineType.includes("row")) {
-//       if (lineData.length && line.includes("row")) {
-//         const lineTotal = lineData.reduce((prev, curr): number => prev + curr);
-//         sum += lineTotal;
-//       }
-//     } else {
-//       if (lineData.length && line.includes("col")) {
-//         const lineTotal = lineData.reduce((prev, curr): number => prev + curr);
-//         sum += lineTotal;
-//       }
-//     }
-//   }
-//   board.score = sum * winningNumber;
-// }
+let lowestMovesToWin: number = pickedNumbers.length;
+let highestMovesToWin: number = 0;
 
-// checkBoards();
-// console.log(boards);
-// const shortestMoves = winningMoveCounts.reduce((prev, curr): number => {
-//   return prev < curr ? prev : curr;
-// });
-// console.log(shortestMoves, winningMoveCounts);
-// const fastestBoard: Board = boards.find(
-//   (board) => board.movesToWin === shortestMoves
-// );
-// console.log(`Part 1: ${fastestBoard.score}`);
+for (let i = 0; i < boards.length; i++) {
+  checkBoard(boards[i]);
+}
+
+const firstWinningBoard: Board | undefined = boards.find(
+  (board) => board.movesToWin === lowestMovesToWin
+);
+console.log(`Part 1: score for quickest board is ${firstWinningBoard?.score}`);
+
+const lastWinningBoard: Board | undefined = boards.find(
+  (board) => board.movesToWin === highestMovesToWin
+);
+
+console.log(`Part 2: score for slowest board is ${lastWinningBoard?.score}`);
