@@ -3,7 +3,7 @@ import * as h from "../helpers";
 const data: string = await h.readData("./2021Inputs/day06input.txt");
 const fish: number[] = data.split(",").map(Number);
 
-const days: number = 256;
+const days: number = 18;
 const RESTART: number = 6;
 const NEWFISH: number = 8;
 
