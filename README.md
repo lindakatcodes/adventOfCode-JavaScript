@@ -23,9 +23,9 @@ This project also has a small web server using Vite and Vue 3, to serve the puzz
 
 It's time!! Working on using Typescript this year, so I can enhance those skills. Let's goooo!!! :)
 
-Days I solved on my own: 1 / 2 /
+Days I solved on my own: 1 / 2 / 3 / 4 / 5 /
 
-Days I got part way but received assistance to finish:
+Days I got part way but received assistance to finish: 6 /
 
 Days I couldn't solve and had to use someone else's solution:
 
