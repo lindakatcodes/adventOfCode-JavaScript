@@ -47,3 +47,8 @@ export function median(array: number[]): number {
     return Math.floor(sorted[array[array.length - 1 / 2]]);
   }
 }
+
+// get the triangular number sequence - the number of dots in a triangular pattern. Like a factorial, but for addition
+export function triangleSequence(num: number): number {
+  return (num * (num + 1)) / 2;
+}
