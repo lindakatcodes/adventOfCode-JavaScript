@@ -31,3 +31,19 @@ export const counts = (arr: any) =>
     }
     return allItems;
   }, {});
+
+export function mean(array: number[]): number {
+  const sum: number = array.reduce((prev, curr) => prev + curr);
+  return Math.floor(sum / array.length);
+}
+
+export function median(array: number[]): number {
+  const sorted: number[] = array.sort((a, b) => a - b);
+  if (array.length % 2 === 0) {
+    return Math.floor(
+      sorted[array.length / 2 - 1] + sorted[array.length / 2] / 2
+    );
+  } else {
+    return Math.floor(sorted[array[array.length - 1 / 2]]);
+  }
+}
