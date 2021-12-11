@@ -44,7 +44,7 @@ export function median(array: number[]): number {
       sorted[array.length / 2 - 1] + sorted[array.length / 2] / 2
     );
   } else {
-    return Math.floor(sorted[array[array.length - 1 / 2]]);
+    return Math.floor(sorted[array.length - 1 / 2]);
   }
 }
 
