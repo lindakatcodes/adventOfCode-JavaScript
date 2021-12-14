@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import '../../2021 Solutions/day12';
+import '../../2021 Solutions/day14';
 </script>
 
 <template>
