@@ -61,66 +61,102 @@ const startPoint: Path = allPoints.get("start") as Path;
 let allPaths: number = 0;
 const possible: string[][] = [];
 
-function processNode(node: Path): Path {
-  // can short circuit if this is the 'end' node
-  if (node.name === "end") {
-    return node;
-  }
-  // mark this node as visited
-  node.visitedCount++;
-  // find next connection - first connection if visited is empty, otherwise next value that has not been visited
-  const nextConnection = node.connections.find(
-    (name: string) => !node.visitedConnections.includes(name)
-  );
-  if (nextConnection) {
-    const nextNode: Path = allPoints.get(nextConnection) as Path;
-    if (nextNode.size === "big") {
-      // visited count doesn't matter, go here
-      node.visitedConnections.push(nextConnection);
-      node.currentPath.push(nextConnection);
-      processNode(nextNode);
-    } else {
-      if (nextNode.name === "end") {
-        node.foundEnd = true;
-        node.currentPath.push(nextConnection);
-        return node;
-      }
-      // this is a small node, so need to make sure it hasn't been visited already
-      if (nextNode.visitedCount !== 0) {
-        // already been visited before, add it to visitedConns so it's not seen again and return
-        node.visitedConnections.push(nextConnection);
-      } else {
-        // safe to go here, proceed
-        node.visitedConnections.push(nextConnection);
-        node.currentPath.push(nextConnection);
-        processNode(nextNode);
-      }
+const queue = {
+  node: {
+    current: null,
+    next: null,
+  },
+  nodes: [],
+  enqueue: (value: string) => {
+    this.nodes.push(value);
+  },
+  dequeue: (value: string) => {
+    if (!this.isEmpty()) {
+      this.nodes.shift(value);
     }
-  }
-  if (
-    node.visitedConnections.length !== node.connections.length &&
-    !node.foundEnd
-  ) {
-    processNode(node);
-  }
-  return node;
+  },
+  isEmpty: (): boolean => !!this.items.length,
+};
+
+function processNode(node: Path) {
+  // mark it as visited
+  // look through the connections
+  // find the next connection that hasn't been visited
+
+  let paths = []; // queue of available path. need to enqueue/dequeue
+
+  // loop over array
+  // drop a path that's invalid
+  // if(string === lowercase) {
+  //   // reset the array
+  //   paths = [];
+  // } else {
+  //   // recursively loop through nodes
+  // }
+  // paths.push(path);
+  // return paths
 }
 
-function findPaths(node: Path) {
-  while (
-    node.visitedConnections.length !== node.connections.length &&
-    !node.foundEnd
-  ) {
-    const findNextPath: Path = processNode(node);
-    if (findNextPath.currentPath.includes("end")) {
-      node.foundEnd = true;
-      possible.push(node.currentPath);
-      allPaths++;
-      node.currentPath = [node.name];
-    }
-  }
-}
+// function processNode(node: Path): Path {
+//   // can short circuit if this is the 'end' node
+//   if (node.name === "end") {
+//     return node;
+//   }
+//   // mark this node as visited
+//   node.visitedCount++;
+//   // find next connection - first connection if visited is empty, otherwise next value that has not been visited
+//   const nextConnection = node.connections.find(
+//     (name: string) => !node.visitedConnections.includes(name)
+//   );
+//   if (nextConnection) {
+//     const nextNode: Path = allPoints.get(nextConnection) as Path;
+//     if (nextNode.size === "big") {
+//       // visited count doesn't matter, go here
+//       node.visitedConnections.push(nextConnection);
+//       node.currentPath.push(nextConnection);
+//       processNode(nextNode);
+//     } else {
+//       if (nextNode.name === "end") {
+//         node.foundEnd = true;
+//         node.currentPath.push(nextConnection);
+//         return node;
+//       }
+//       // this is a small node, so need to make sure it hasn't been visited already
+//       if (nextNode.visitedCount !== 0) {
+//         // already been visited before, add it to visitedConns so it's not seen again and return
+//         node.visitedConnections.push(nextConnection);
+//       } else {
+//         // safe to go here, proceed
+//         node.visitedConnections.push(nextConnection);
+//         node.currentPath.push(nextConnection);
+//         processNode(nextNode);
+//       }
+//     }
+//   }
+//   if (
+//     node.visitedConnections.length !== node.connections.length &&
+//     !node.foundEnd
+//   ) {
+//     processNode(node);
+//   }
+//   return node;
+// }
 
-findPaths(startPoint);
-console.log(allPaths);
-console.log(possible);
+// function findPaths(node: Path) {
+//   while (
+//     node.visitedConnections.length !== node.connections.length &&
+//     !node.foundEnd
+//   ) {
+//     const findNextPath: Path = processNode(node);
+//     if (findNextPath.currentPath.includes("end")) {
+//       node.foundEnd = true;
+//       possible.push(node.currentPath);
+//       allPaths++;
+//       node.currentPath = [node.name];
+//     }
+//   }
+// }
+
+// findPaths(startPoint);
+// console.log(allPaths);
+// console.log(possible);
